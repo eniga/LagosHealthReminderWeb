@@ -1,0 +1,33 @@
+
+<div class="page-header" filter-color="blue">
+  <div class="page-header-image" style="background-image:url(assets/img/login.jpg)"></div>
+  <div class="container">
+      <div class="col-md-4 content-center">
+          <div class="card card-login card-plain">
+              <form class="form" method="" action="">
+                <div class="content">
+                    <div class="input-group form-group-no-border" [ngClass]="{'input-group-focus':focus===true}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">  <i class="now-ui-icons users_circle-08"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Username..." (focus)="focus=true" (blur)="focus=false" >
+                    </div>
+                </div>
+                <div class="footer">
+                    <button type="button" class="btn btn-info btn-lg" (click)="forgotpassword()">Reset Password</button>
+                    <p>
+                        Remember your password? <a href="#" class="link" [routerLink]="['/login']">Back to Login</a>
+                    </p>
+                </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  <footer class="footer">
+        <div class="container-fluid text-center">
+          <h6><small>
+            {{ mydate | date: 'yyyy' }} &copy; Designed by International Electronics Services Ltd. Lagos, Nigeria
+          </small></h6>
+        </div>
+    </footer>
+</div>

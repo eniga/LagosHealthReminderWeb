@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.bg-custom {
+    background-color: #17a2b8 !important;
+
+    :hover {
+        background-color: #b4e7f0;
+    }
+}
+
+.nav-text {
+    color: #FFF;
+}
+
+.btn-custom {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background-color: #17a2b8 !important;
+    border: solid 1px transparent;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+        background-color: #b4e7f0;
+        font-weight: bold;
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
+        outline-color: rgba(255, 255, 255, 0);
+        outline-offset: 15px;
+    }
+}
+
+
+.card [class*=card-header-]:not(.card-header-icon):not(.card-header-text):not(.card-header-image) {
+    border-radius: 3px;
+    margin-top: -20px;
+    padding: 15px;
+}
+
+.card [class*=card-header-] {
+    margin: 0 15px;
+    padding: 0;
+    position: relative;
+}

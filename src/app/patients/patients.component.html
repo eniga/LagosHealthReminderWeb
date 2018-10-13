@@ -1,0 +1,101 @@
+<div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Patients</h5>
+            <button type="button" class="btn btn-success">Add New</button>
+            <button type="button" class="btn btn-custom disabled">Appointments</button>
+            <mat-form-field class="col-sm-3 pull-right">
+              <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
+            </mat-form-field>
+          </div>
+          <div class="card-body">
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-hover" matSort>
+
+                <!-- First Name -->
+                <ng-container matColumnDef="firstName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.firstName }} </td>
+                  </ng-container>
+
+                  <!-- Middle Name-->
+                <ng-container matColumnDef="middleName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Middle Name</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.middleName }} </td>
+                  </ng-container>
+
+                  <!-- Last Name -->
+                <ng-container matColumnDef="lastName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.lastName }} </td>
+                  </ng-container>
+
+                  <!-- Phone -->
+                  <ng-container matColumnDef="phone">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.phone }} </td>
+                    </ng-container>
+   
+                  <!-- Email -->
+                  <ng-container matColumnDef="email">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+                    </ng-container>
+  
+                    <!-- Date of Birth-->
+                  <ng-container matColumnDef="dob">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.dob | date }} </td>
+                    </ng-container>
+  
+                    <!-- Settlement -->
+                  <ng-container matColumnDef="settlement">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Settlement</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.settlement }} </td>
+                    </ng-container>
+    
+                    <!-- Created By -->
+                  <ng-container matColumnDef="insertUser">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.insertUser }} </td>
+                    </ng-container>
+    
+                    <!-- Date Created -->
+                  <ng-container matColumnDef="insertDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
+                    </ng-container>
+    
+                    <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef>Actions</th>
+                      <td mat-cell *matCellDef="let element;">
+                          <button type="button" rel="tooltip" title="View More" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal">
+                              <i class="material-icons">edit</i>
+                            </button>
+                        <button type="button" rel="tooltip" title="Edit" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editItem(element)">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
+                          <i class="material-icons">close</i>
+                        </button>
+                        <button type="button" rel="tooltip" title="Assign QR Code" class="btn btn-primary btn-link btn-sm" *ngIf="element.qrCodeId > 0">
+                          <i class="material-icons">add</i> Assign QR Code
+                        </button>
+                      </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>  
+                <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+                    <mat-progress-spinner color="primary" mode="indeterminate">
+                    </mat-progress-spinner>
+                  </mat-card>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

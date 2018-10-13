@@ -1,0 +1,108 @@
+<div class="main-content">
+  <div class="row">
+      <div class="col-md-4">
+          <div class="card">
+              <div class="card-header card-header-tabs card-header-info">
+                  <h4 class="card-title">Service Types</h4>
+                  <p class="card-category">
+                    The Service Types offered
+                    <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#ServiceTypeModal">Add New</button>
+                  </p>
+              </div>  
+              <div class="card-body">
+                  <table class="table table-hover">
+                      <tbody *ngFor="let service of serviceTypes; let i = index">
+                        <tr>
+                          <td>
+                            <button class="btn btn-custom btn-sm" (click)="loadKind(i)">Select</button>
+                          </td>
+                          <td>{{ service.name }}</td>
+                          <td class="td-actions text-left">
+                            <button type="button" rel="tooltip" title="Edit" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editType(i)">
+                              <i class="material-icons">edit</i>
+                            </button>
+                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeType(i)">
+                              <i class="material-icons">close</i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </div>
+            </div>
+      </div>
+    <div class="col-md-8" *ngIf="serviceKinds.length > 0">
+        <div class="card">
+            <div class="card-header card-header-warning">
+              <h4 class="card-title">Service Kinds</h4>
+              <p class="card-category">
+                The Service kinds for the selected service type
+                <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#ServiceKindModal" >Add New</button>
+              </p>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <tbody *ngFor="let kind of serviceKinds; let i = index">
+                      <tr>
+                        <td>{{ kind.name }}</td>
+                        <td class="td-actions text-right">
+                          <button type="button" rel="tooltip" title="Edit" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceKindModal" (click)="editKind(i)">
+                            <i class="material-icons">edit</i>
+                          </button>
+                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeKind(i)">
+                            <i class="material-icons">close</i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ServiceTypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Service Type</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="ServiceTypeName">Name</label>
+            <input type="text" class="form-control" id="ServiceTypeName" [(ngModel)]="serviceTypeName">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal" (click)="addType()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="ServiceKindModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Service Kind</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="ServiceTypeName">Name</label>
+                <input type="text" class="form-control" id="ServiceTypeName" [(ngModel)]="serviceKindName">
+              </div>
+            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-info" (click)="addKind()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

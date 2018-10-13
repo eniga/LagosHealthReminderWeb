@@ -1,0 +1,76 @@
+<div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Wards</h5>
+            <button type="button" class="btn btn-success">Add New</button>
+            <button type="button" class="btn btn-info" [routerLink]="['/medical-centres']">
+              <i class="now-ui-icons arrows-1_minimal-left"></i> Back to Medical Centres
+            </button>
+            <button type="button" class="btn btn-custom" [routerLink]="['/lgas']">Manage LGAs</button>
+            <button type="button" class="btn btn-custom disabled">Manage States</button>
+            <mat-form-field class="col-sm-3 pull-right">
+              <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
+            </mat-form-field>
+          </div>
+          <div class="card-body">
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-hover" matSort>
+   
+                  <!-- Ward -->
+                  <ng-container matColumnDef="ward">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ward</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.ward }} </td>
+                    </ng-container>
+  
+                    <!-- Local Government Area-->
+                  <ng-container matColumnDef="lga">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Local Government Area</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.lga }} </td>
+                    </ng-container>
+  
+                    <!-- State -->
+                  <ng-container matColumnDef="state">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.state }} </td>
+                    </ng-container>
+    
+                    <!-- State -->
+                  <ng-container matColumnDef="insertUser">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.insertUser }} </td>
+                    </ng-container>
+    
+                    <!-- State -->
+                  <ng-container matColumnDef="insertDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
+                    </ng-container>
+    
+                    <!-- Actions Column -->
+                  <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef>Actions</th>
+                      <td mat-cell *matCellDef="let element;">
+                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editItem(element)">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
+                          <i class="material-icons">close</i>
+                        </button>
+                      </td>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <div *ngIf="wards.length === 0 && !isLoading" class="text-center">No data</div>
+                <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+                    <mat-progress-spinner color="primary" mode="indeterminate">
+                    </mat-progress-spinner>
+                  </mat-card>
+                <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
