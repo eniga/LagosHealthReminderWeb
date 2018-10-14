@@ -4,9 +4,9 @@
         <div class="card">
           <div class="card-header">
             <h5 class="card-title">Local Government Areas</h5>
-            <button mat-raised-button type="button" class="btn btn-success">Add New</button>
+            <button mat-raised-button type="button" class="btn btn-success" (click)="openAddModal(newlga)">Add New</button>
             <button mat-raised-button type="button" class="btn btn-info" [routerLink]="['/medical-centres']">
-              <i class="now-ui-icons arrows-1_minimal-left"></i> Back to Medical Centres
+              <i class="now-ui-icons arrows-1_minimal-left"></i> Back to Settlements
             </button>
             <button type="button" class="btn btn-custom" [routerLink]="['/wards']">Manage Wards</button>
             <button type="button" class="btn btn-custom disabled">Manage States</button>
@@ -44,7 +44,7 @@
               <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef>Actions</th>
                   <td mat-cell *matCellDef="let element;">
-                    <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editItem(element)">
+                    <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newlga, element)">
                       <i class="material-icons">edit</i>
                     </button>
                     <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
@@ -64,3 +64,30 @@
       </div>
     </div>
   </div>
+  <ng-template #newlga let-c="close" let-d="dismiss">
+      <div class="modal-header">
+          <h5 class="modal-title text-center">{{modalTitle}}</h5>
+          <button type="button" class="close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Local Government Area</label>
+          <input class="form-control" [(ngModel)]="lga">
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <input class="form-control" [(ngModel)]="state" disabled="disabled">
+        </div>
+      </div>
+      <div class="modal-footer">
+          <div class="left-side">
+              <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
+          </div>
+          <div class="divider"></div>
+          <div class="right-side">
+            <button type="button" class="btn btn-success" (click)="addItem()">Save</button>
+          </div>
+      </div>
+    </ng-template>

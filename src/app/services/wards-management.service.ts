@@ -13,4 +13,16 @@ export class WardsManagementService {
   getAllWards() {
     return this.http.get<WardsModel[]>(appsettings.api_url + 'wards');
   }
+
+  newWard(ward: WardsModel){
+    return this.http.post(appsettings.api_url + 'wards', ward);
+  }
+
+  updateWard(ward: WardsModel){
+    return this.http.put(appsettings.api_url + 'wards', ward);
+  }
+
+  removeWard(wardId: number){
+    return this.http.delete(appsettings.api_url + 'wards/' + wardId);
+  }
 }

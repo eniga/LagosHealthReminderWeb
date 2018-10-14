@@ -38,7 +38,9 @@ export class UserManagementComponent implements OnInit {
   editMode = false;
   isActive = false;
   email: string;
-
+  password: string;
+  password2: string;
+  modalTitle: string;
 
   constructor(private service: UserManagementService, private roleService: RolesService, private modalService: NgbModal) { }
 
@@ -54,9 +56,6 @@ export class UserManagementComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.updateTotal();
     });
-  }
-
-  addUser(){
   }
 
   // Method to filter the displayed data, used for search
@@ -109,15 +108,6 @@ export class UserManagementComponent implements OnInit {
 
   }
 
-  private getDismissReason(reason: any): string {
-      if (reason === ModalDismissReasons.ESC) {
-          return 'by pressing ESC';
-      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-          return 'by clicking on a backdrop';
-      } else {
-          return  `with: ${reason}`;
-      }
-  }
 
   openNewUser(content){
     this.userId = 0;
@@ -127,15 +117,14 @@ export class UserManagementComponent implements OnInit {
     this.displayName = '';
     this.isActive = false;
     this.email = '';
-
+    this.password = '';
+    this.password2 = '';
+    this.editMode = false;
     this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
       this.roles = data;
     })
-    this.modalService.open(content).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.modalTitle = "Add New User";
+    this.openModal(content);
   }
 
   openEditUser(content, element){
@@ -150,11 +139,8 @@ export class UserManagementComponent implements OnInit {
     this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
       this.roles = data;
     })
-    this.modalService.open(content).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.modalTitle = "Edit User";
+    this.openModal(content);
   }
 
   openEditRole(content, element){
@@ -166,15 +152,45 @@ export class UserManagementComponent implements OnInit {
     this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
       this.roles = data;
     })
-    this.modalService.open(content).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.openModal(content);
   }
   
   filterForeCasts(event) {
     this.roleId = event;
+  }
+
+  saveUser(){
+    console.log(this.editMode);
+    if(this.password !== this.password2){
+      swal('Error', 'Password confirmation does not match', 'error');
+    } else {
+      let item = new UsersModel;
+      item.username = this.username;
+      item.displayName = this.displayName;
+      item.password = this.password;
+      item.isActive = this.isActive;
+      item.insertUser = localStorage.getItem('userId');
+      item.email = this.email;
+      item.roleId = this.roleId;
+      console.log(item);
+      this.modalService.dismissAll('Saved');
+    }
+  }
+
+  updateUser(){
+
+  }
+
+  openResetPassword(content, element){
+    this.username = element.username;
+    this.openModal(content);
+  }
+
+  resetPassword(){
+    console.log('About to reset the user ' + this.username + ' with password: ' + this.password)
+    this.modalService.dismissAll('Password reset');
+    this.username = '';
+    this.password = '';
   }
   
   saveRole(){
@@ -195,5 +211,28 @@ export class UserManagementComponent implements OnInit {
     }
     this.modalService.dismissAll('Saved');
   }
+
+  openModal(content){
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeModal(content){
+    this.modalService.dismissAll(content);
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+    } else {
+        return  `with: ${reason}`;
+    }
+  }
+
   
 }

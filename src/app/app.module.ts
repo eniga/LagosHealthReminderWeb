@@ -11,6 +11,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { FooterComponent } from './components/footer/footer.component';
     NgbModule.forRoot()
   ],
   providers: [
-    AuthGuard
+    AuthGuard,
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

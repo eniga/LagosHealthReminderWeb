@@ -2,6 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PatientsModel } from '../models/PatientsModel';
 import { PatientsService } from '../services/patients.service';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MedicalCentresModel } from '../models/MedicalCentreModel';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import swal from 'sweetalert'; 
+import { ResponseModel } from '../models/ResponseModel';
+import { MedicalCentresService } from '../services/medical-centres.service';
 
 @Component({
   selector: 'app-patients',
@@ -23,7 +28,25 @@ export class PatientsComponent implements OnInit {
   total: number;
   isLoading = true;
 
-  constructor(private service: PatientsService) { }
+  patientId: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  phone: string;
+  altPhone: string;
+  email: string;
+  dob: Date;
+  settlementId: number;
+  settlement: string;
+  settlements: MedicalCentresModel[];
+
+  // For Modal
+  closeResult: string;
+  editMode = false;
+  modalTitle: string;
+  
+
+  constructor(private service: PatientsService, private settlementService: MedicalCentresService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getAllPatients();
@@ -92,4 +115,77 @@ export class PatientsComponent implements OnInit {
   exportTable(){
 
   }
+
+  addItem(){
+    let item = new PatientsModel;
+    item.insertUserId = +localStorage.getItem('userId');
+    console.log(item);
+    this.closeModal('Added');
+  }
+
+  updateItem(){
+    let item = new PatientsModel;
+    
+    item.updateUserId = +localStorage.getItem('userId');
+    this.service.updatePatient(item).subscribe((data: ResponseModel) => {
+      swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+      this.getAllPatients();
+    })
+    this.closeModal('Updated');
+  }
+
+  openAddModal(content){
+    this.patientId = 0;
+    this.firstName = '';
+    this.middleName = '';
+    this.lastName = '';
+    this.phone = '';
+    this.email = '';
+    this.dob = new Date;
+    this.settlementId = 0;
+    this.modalTitle = "Add New Patient";
+    this.editMode = false;
+    this.openModal(content);
+  }
+
+  openEditModal(content, element){
+    this.patientId = element.patientId;
+    this.firstName = element.firstName;
+    this.middleName = element.middleName;
+    this.lastName = element.lastName;
+    this.phone = element.phone;
+    this.email = element.email;
+    this.dob = element.dob;
+    this.settlementId = element.settlementId;
+    this.modalTitle = "Edit Patient";
+    this.editMode = true;
+    this.openModal(content);
+  }
+
+  openModal(content){
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeModal(content){
+    this.modalService.dismissAll(content);
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+    } else {
+        return  `with: ${reason}`;
+    }
+  }
+
+  filterForeCasts(event) {
+    this.settlementId = event;
+  }
+
 }

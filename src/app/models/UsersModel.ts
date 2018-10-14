@@ -15,8 +15,6 @@ export class UsersModel {
     updateUser: string;
     updateDate: Date;
     isActive: boolean;
-    firstName: string;
-    lastName: string;
     userRoleId: number;
     roleId: number;
     roleName: string;

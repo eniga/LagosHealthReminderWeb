@@ -3,6 +3,9 @@ import { MedicalCentresModel } from '../models/MedicalCentreModel';
 
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { MedicalCentresService } from '../services/medical-centres.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { WardsModel } from '../models/WardsModel';
+import { WardsManagementService } from '../services/wards-management.service';
 
 @Component({
   selector: 'app-medical-centres',
@@ -22,10 +25,29 @@ export class MedicalCentresComponent implements OnInit {
   total: number;
   isLoading = true;
 
-  constructor(private service: MedicalCentresService) { }
+  // Values for modal
+  settlementId: number;
+  settlement: string;
+  wardId: number;
+  ward: string;
+  wards: WardsModel[];
+
+  // For Modal
+  closeResult: string;
+  editMode = false;
+  modalTitle: string;
+
+  constructor(private service: MedicalCentresService, private wardService: WardsManagementService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getAll()
+    this.getAllWards();
+  }
+
+  getAllWards(){
+    this.wardService.getAllWards().subscribe((data: WardsModel[]) => {
+      this.wards = data;
+    })
   }
 
   getAll(){
@@ -91,4 +113,47 @@ export class MedicalCentresComponent implements OnInit {
 
   }
 
+  addItem(){
+    this.closeModal('Added');
+  }
+
+  openAddModal(content){
+    this.settlement = '';
+    this.ward = '';
+    this.modalTitle = "Add New Settlement";
+    this.openModal(content);
+  }
+
+  openEditModal(content, element){
+    this.settlement = element.settlement;
+    this.ward = element.ward;
+    this.modalTitle = "Edit Settlement";
+    this.openModal(content);
+  }
+
+  openModal(content){
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeModal(content){
+    this.modalService.dismissAll(content);
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+    } else {
+        return  `with: ${reason}`;
+    }
+  }
+
+  filterForeCasts(event) {
+    this.wardId = event;
+  }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { LgasManagementService } from '../services/lgas-management.service';
 import { LgaModel } from '../models/LgaModel';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-lgas-management',
@@ -20,7 +21,16 @@ export class LgasManagementComponent implements OnInit {
   total: number;
   isLoading = true;
 
-  constructor(private service: LgasManagementService) { }
+  // Values for modal
+  lga: string;
+  state: string;
+
+  // For Modal
+  closeResult: string;
+  editMode = false;
+  modalTitle: string;
+
+  constructor(private service: LgasManagementService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getAll();
@@ -89,7 +99,44 @@ export class LgasManagementComponent implements OnInit {
 
   // Method to Add new Centre
   addItem(){
-
+    this.closeModal('Added');
   }
+
+  openAddModal(content){
+    this.lga = '';
+    this.state = 'Lagos'
+    this.modalTitle = 'Add New LGA';
+    this.openModal(content);
+  }
+
+  openEditModal(content, element){
+    this.lga = element.lga;
+    this.state = element.state;
+    this.modalTitle = 'Edit LGA';
+    this.openModal(content);
+  }
+
+  openModal(content){
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  closeModal(content){
+    this.modalService.dismissAll(content);
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+    } else {
+        return  `with: ${reason}`;
+    }
+  }
+
 
 }
