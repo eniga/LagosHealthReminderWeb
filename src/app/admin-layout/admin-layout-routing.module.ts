@@ -16,7 +16,9 @@ const routes: Routes = [
       { path: 'qr-management', loadChildren: './../qr-management/qr-management.module#QrManagementModule'},
       { path: 'user-management', loadChildren: './../user-management/user-management.module#UserManagementModule' },
       { path: 'wards', loadChildren: '../wards-management/wards-management.module#WardsManagementModule' },
-      { path: 'lgas', loadChildren: '../lgas-management/lgas-management.module#LgasManagementModule' }
+      { path: 'lgas', loadChildren: '../lgas-management/lgas-management.module#LgasManagementModule' },
+      { path: 'roles', loadChildren: '../roles/roles.module#RolesModule' },
+      { path: 'role-permissions', loadChildren: '../role-permissions/role-permissions.module#RolePermissionsModule' }
     ]
   }
 ]

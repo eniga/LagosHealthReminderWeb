@@ -11,7 +11,8 @@ import Chart from 'chart.js';
 })
 export class NavbarComponent implements OnInit {
 
-    user: string = localStorage.getItem('user');
+    user: string = localStorage.getItem('displayName');
+    roleName: string = localStorage.getItem('roleName');
   private listTitles: any[];
   location: Location;
     mobile_menu_visible: any = 0;

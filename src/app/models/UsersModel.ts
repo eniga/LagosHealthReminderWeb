@@ -17,4 +17,12 @@ export class UsersModel {
     isActive: boolean;
     firstName: string;
     lastName: string;
+    userRoleId: number;
+    roleId: number;
+    roleName: string;
+}
+
+export class LoginUserModel {
+    username: string;
+    password: string;
 }

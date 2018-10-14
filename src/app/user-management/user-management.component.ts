@@ -2,6 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsersModel } from '../models/UsersModel';
 import { UserManagementService } from '../services/user-management.service';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { RolesService } from '../services/roles.service';
+import { RolesModel } from '../models/RolesModel';
+import {NgbModal, ModalDismissReasons }from '@ng-bootstrap/ng-bootstrap';
+import { ResponseModel } from '../models/ResponseModel';
+import swal from 'sweetalert'; 
+import { UserRolesModel } from '../models/UserRolesModel';
 
 @Component({
   selector: 'app-user-management',
@@ -10,7 +16,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 })
 export class UserManagementComponent implements OnInit {
   // Array of Users
-  displayedColumns: string[] = ['username', 'displayName', 'email', 'isActive', 'insertDate', 'insertUser', 'actions'];
+  displayedColumns: string[] = ['username', 'displayName', 'password', 'email', 'isActive', 'insertDate', 'insertUser', 'role', 'actions'];
   dataSource: MatTableDataSource<UsersModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -21,7 +27,20 @@ export class UserManagementComponent implements OnInit {
   users: UsersModel[] = [];
   isLoading = true;
 
-  constructor(private service: UserManagementService) { }
+  userId: number;
+  username: string = '';
+  roles: RolesModel[];
+  roleId: number;
+  roleName: string;
+  closeResult: string;
+  userRoleId: number;
+  displayName: string;
+  editMode = false;
+  isActive = false;
+  email: string;
+
+
+  constructor(private service: UserManagementService, private roleService: RolesService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getAllUsers();
@@ -90,5 +109,91 @@ export class UserManagementComponent implements OnInit {
 
   }
 
+  private getDismissReason(reason: any): string {
+      if (reason === ModalDismissReasons.ESC) {
+          return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+          return 'by clicking on a backdrop';
+      } else {
+          return  `with: ${reason}`;
+      }
+  }
 
+  openNewUser(content){
+    this.userId = 0;
+    this.username = '';
+    this.roleId = 0;
+    this.userRoleId = 0;
+    this.displayName = '';
+    this.isActive = false;
+    this.email = '';
+
+    this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
+      this.roles = data;
+    })
+    this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openEditUser(content, element){
+    this.userId = element.userId;
+    this.username = element.username;
+    this.roleId = element.roleId;
+    this.userRoleId = element.userRoleId;
+    this.displayName = element.displayName;
+    this.isActive = element.isActive;
+    this.email = element.email;
+
+    this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
+      this.roles = data;
+    })
+    this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  openEditRole(content, element){
+    this.userId = element.userId;
+    this.username = element.username;
+    this.roleId = element.roleId;
+    this.userRoleId = element.userRoleId;
+
+    this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
+      this.roles = data;
+    })
+    this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  
+  filterForeCasts(event) {
+    this.roleId = event;
+  }
+  
+  saveRole(){
+    let item = new UserRolesModel;
+    item.roleId = this.roleId;
+    item.userId = this.userId;
+    if(this.userRoleId > 0){
+      item.userRoleId = this.userRoleId
+      this.service.updateRole(item).subscribe((data: ResponseModel) => {
+        swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+        this.getAllUsers();
+      })
+    } else {
+      this.service.assignRole(item).subscribe((data: ResponseModel) => {
+        swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+        this.getAllUsers();
+      })
+    }
+    this.modalService.dismissAll('Saved');
+  }
+  
 }

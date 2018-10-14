@@ -11,9 +11,6 @@ import { AuthGuard } from './auth/auth.guard';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { PatientsComponent } from './patients/patients.component';
-// import { WardsManagementComponent } from './wards-management/wards-management.component';
-// import { LgasManagementComponent } from './lgas-management/lgas-management.component';
 
 @NgModule({
   declarations: [

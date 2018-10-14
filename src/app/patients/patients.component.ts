@@ -10,9 +10,9 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 })
 export class PatientsComponent implements OnInit {
 
+  // Array of Patients
   patients: PatientsModel[] = [];
 
-  // Array of Patients
   displayedColumns: string[] = ['firstName', 'middleName', 'lastName', 'phone', 'email', 'dob', 'settlement', 'insertDate', 'insertUser', 'actions'];
   dataSource: MatTableDataSource<PatientsModel>;
 

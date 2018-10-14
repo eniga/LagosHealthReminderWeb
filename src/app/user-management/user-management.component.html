@@ -4,9 +4,8 @@
       <div class="card">
         <div class="card-header">
           <h5 class="title">Users</h5>
-          <button type="button" class="btn btn-custom">Add New</button>
-          <button type="button" class="btn btn-custom">Manage Roles</button>
-          <button type="button" class="btn btn-custom disabled">Manage User Permissions</button>
+          <button type="button" class="btn btn-success" (click)="openNewUser(newuser)">Add New</button>
+          <button type="button" class="btn btn-custom" [routerLink]="['/roles']">Manage Roles</button>
           <mat-form-field class="col-sm-3 pull-right">
               <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
             </mat-form-field>
@@ -25,6 +24,14 @@
                     <td mat-cell *matCellDef="let element"> {{ element.displayName }} </td>
                   </ng-container>
 
+                <!-- Password -->
+                <ng-container matColumnDef="password">
+                  <th mat-header-cell *matHeaderCellDef>Password</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button class="btn btn-custom" (click)="openEditRole(classic, element)">Change Password</button>
+                  </td>
+                </ng-container>
+
                   <!-- Email-->
                 <ng-container matColumnDef="email">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
@@ -40,14 +47,22 @@
                         </span>
                     </td>
                   </ng-container>
+
+                  <!-- Role -->
+                <ng-container matColumnDef="role">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+                  <td mat-cell *matCellDef="let element"> 
+                    <span *ngIf="element.roleId">{{ element.roleName }}</span>
+                  </td>
+                </ng-container>
   
-                  <!-- State -->
+                  <!-- Created By -->
                 <ng-container matColumnDef="insertUser">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
                     <td mat-cell *matCellDef="let element"> {{ element.insertUser }} </td>
                   </ng-container>
   
-                  <!-- State -->
+                  <!-- Date Created -->
                 <ng-container matColumnDef="insertDate">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
                     <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
@@ -57,7 +72,9 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Actions</th>
                     <td mat-cell *matCellDef="let element;">
-                      <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editItem(element)">
+                      <span *ngIf="element.roleId"><button class="btn btn-custom" (click)="openEditRole(classic, element)">Change Role</button></span>
+                      <span *ngIf="!element.roleId"><button class="btn btn-custom" (click)="openEditRole(classic, element)">Assign Role</button></span>
+                      <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditUser(newuser, element)">
                         <i class="material-icons">edit</i>
                       </button>
                       <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
@@ -69,14 +86,87 @@
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
+              <div *ngIf="users.length === 0 && !isLoading" class="text-center">No data</div>
+              <div *ngIf="isLoading" class="text-center">Loading....</div>
               <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator> 
-              <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
-                  <mat-progress-spinner color="primary" mode="indeterminate">
-                  </mat-progress-spinner>
-                </mat-card>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+<ng-template #classic let-c="close" let-d="dismiss">
+  <div class="modal-header">
+      <h5 class="modal-title text-center">Add New Role</h5>
+      <button type="button" class="close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <input class="form-control" [(ngModel)]="username" disabled="disabled">
+    </div>
+    <div class="form-group">
+      <select class="form-control" (change)="filterForeCasts($event.target.value)">
+          <option>--Select Role--</option>
+          <option *ngFor="let role of roles" value={{role.roleId}} selected="{{ role.roleId === roleId ? 'selected' : ''}}">
+              {{role.roleName}}
+          </option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <div class="left-side">
+          <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
+      </div>
+      <div class="divider"></div>
+      <div class="right-side">
+        <button type="button" class="btn btn-success" (click)="saveRole()">Save</button>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #newuser let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h5 class="modal-title text-center">Add New User</h5>
+        <button type="button" class="close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <input class="form-control" [(ngModel)]="username" placeholder="Username....">
+      </div>
+      <div class="form-group">
+        <input class="form-control" [(ngModel)]="displayName" placeholder="Display Name...">
+      </div>
+      <div class="form-group">
+          <input class="form-control" [(ngModel)]="email" placeholder="Email...">
+        </div>
+      <div class="form-group">
+        <select class="form-control" (change)="filterForeCasts($event.target.value)">
+            <option>--Select Role--</option>
+            <option *ngFor="let role of roles" value={{role.roleId}} selected="{{ role.roleId === roleId ? 'selected' : ''}}">
+                {{role.roleName}}
+            </option>
+        </select>
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="{{isActive}}" checked="{{ isActive ? 'checked': ''}}">
+                Active
+                <span class="form-check-sign"></span>
+            </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+        <div class="left-side">
+            <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
+        </div>
+        <div class="divider"></div>
+        <div class="right-side">
+          <button type="button" class="btn btn-success" (click)="updateUser()" *ngIf="editMode">Update</button>
+          <button type="button" class="btn btn-success" (click)="addUser()" *ngIf="!editMode">Save</button>
+        </div>
+    </div>
+  </ng-template>

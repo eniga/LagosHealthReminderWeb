@@ -89,11 +89,9 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
+                <div *ngIf="patients.length === 0 && !isLoading" class="text-center">No data</div>
+                <div *ngIf="isLoading" class="text-center">Loading....</div>
                 <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>  
-                <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
-                    <mat-progress-spinner color="primary" mode="indeterminate">
-                    </mat-progress-spinner>
-                  </mat-card>
             </div>
         </div>
       </div>
