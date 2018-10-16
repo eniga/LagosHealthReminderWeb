@@ -14,10 +14,10 @@ export class UsersModel {
     updateUserId: number;
     updateUser: string;
     updateDate: Date;
-    isActive: boolean;
     userRoleId: number;
     roleId: number;
     roleName: string;
+    isActive: number;
 }
 
 export class LoginUserModel {

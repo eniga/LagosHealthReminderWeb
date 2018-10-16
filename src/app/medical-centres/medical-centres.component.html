@@ -54,7 +54,7 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Actions</th>
                     <td mat-cell *matCellDef="let element;">
-                      <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editItem(element)">
+                      <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newsettlement, element)">
                         <i class="material-icons">edit</i>
                       </button>
                       <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
@@ -103,7 +103,8 @@
         </div>
         <div class="divider"></div>
         <div class="right-side">
-          <button type="button" class="btn btn-success" (click)="addItem()">Save</button>
+          <button type="button" class="btn btn-success" (click)="updateItem()" *ngIf="editMode">Update</button>
+            <button type="button" class="btn btn-success" (click)="addItem()" *ngIf="!editMode">Save</button>
         </div>
     </div>
   </ng-template>

@@ -32,14 +32,17 @@ export class UserManagementComponent implements OnInit {
   roles: RolesModel[];
   roleId: number;
   roleName: string;
-  closeResult: string;
   userRoleId: number;
   displayName: string;
-  editMode = false;
-  isActive = false;
+  isActive = 0;
   email: string;
   password: string;
   password2: string;
+  updateUserId: number;
+
+  // For Modal
+  closeResult: string;
+  editMode = false;
   modalTitle: string;
 
   constructor(private service: UserManagementService, private roleService: RolesService, private modalService: NgbModal) { }
@@ -69,27 +72,29 @@ export class UserManagementComponent implements OnInit {
   }
 
   // Method to remove an element from the array
-  removeUser(element, filterValue){
-    // Get the index of the element
-    let i = this.users.findIndex(x => x.userId == element.userId);
-
-    // Remove element from the countries array
-    this.users.splice(i, 1);
-
-    // Rebind dataSource data array to countries array
-    this.dataSource = new MatTableDataSource(this.users);
-    
-    // Check if the data table is filtered, if filtered then filter the returned data again
-    if(filterValue != undefined){
-      this.dataSource.filter = filterValue.trim().toLowerCase();
+  removeItem(element){
+    if(element.userId === 1){
+      swal('Not Allowed', 'This user cannot be removed', 'warning');
+      return false;
     }
-
-    // Update the number of total available records in the array
-    this.updateTotal();
-
-    // Re-initialize pagination and sorting
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    swal({
+      title: 'Are you sure?',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: {
+          text: 'Delete'
+        }
+      }
+    }).then((value) => {
+      if(value){
+        this.service.removeUser(element.userId).subscribe((data: ResponseModel) => {
+          swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+          this.getAllUsers();
+        })
+      }
+    });
   }
 
   // Method to return selected centre details
@@ -115,7 +120,7 @@ export class UserManagementComponent implements OnInit {
     this.roleId = 0;
     this.userRoleId = 0;
     this.displayName = '';
-    this.isActive = false;
+    this.isActive = 0;
     this.email = '';
     this.password = '';
     this.password2 = '';
@@ -128,6 +133,10 @@ export class UserManagementComponent implements OnInit {
   }
 
   openEditUser(content, element){
+    if(element.userId === 1){
+      swal('Not Allowed', 'This user cannot be modified', 'warning');
+      return false;
+    }
     this.userId = element.userId;
     this.username = element.username;
     this.roleId = element.roleId;
@@ -135,7 +144,7 @@ export class UserManagementComponent implements OnInit {
     this.displayName = element.displayName;
     this.isActive = element.isActive;
     this.email = element.email;
-
+    this.editMode = true;
     this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
       this.roles = data;
     })
@@ -144,11 +153,15 @@ export class UserManagementComponent implements OnInit {
   }
 
   openEditRole(content, element){
+    if(element.userId === 1){
+      swal('Not Allowed', 'This user cannot be modified', 'warning');
+      return false;
+    }
     this.userId = element.userId;
     this.username = element.username;
     this.roleId = element.roleId;
     this.userRoleId = element.userRoleId;
-
+    this.editMode = true;
     this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
       this.roles = data;
     })
@@ -160,7 +173,6 @@ export class UserManagementComponent implements OnInit {
   }
 
   saveUser(){
-    console.log(this.editMode);
     if(this.password !== this.password2){
       swal('Error', 'Password confirmation does not match', 'error');
     } else {
@@ -168,21 +180,45 @@ export class UserManagementComponent implements OnInit {
       item.username = this.username;
       item.displayName = this.displayName;
       item.password = this.password;
-      item.isActive = this.isActive;
-      item.insertUser = localStorage.getItem('userId');
+      item.isActive = 0;
+      item.insertUserId = +localStorage.getItem('userId');
       item.email = this.email;
-      item.roleId = this.roleId;
-      console.log(item);
+      // console.log(item);
+      this.service.addUser(item).subscribe((data: ResponseModel) => {
+        swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+        this.getAllUsers();
+      })
       this.modalService.dismissAll('Saved');
     }
   }
 
   updateUser(){
-
+    if(this.isActive && this.roleId === 0){
+      swal('Error', 'A role must be assigned before activating user', 'error');
+    } else {
+      let item = new UsersModel;
+      item.userId = this.userId;
+      item.username = this.username;
+      item.displayName = this.displayName;
+      item.email = this.email;
+      item.updateUserId = +localStorage.getItem('userId');
+      item.isActive = +this.isActive ;
+      
+      this.service.updateUser(item).subscribe((data: ResponseModel) => {
+        swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+        this.getAllUsers();
+      })
+    }
+    this.modalService.dismissAll('Saved');
   }
 
   openResetPassword(content, element){
+    if(element.userId === 1){
+      swal('Not Allowed', 'This user cannot be modified', 'warning');
+      return false;
+    }
     this.username = element.username;
+    this.password = '';
     this.openModal(content);
   }
 

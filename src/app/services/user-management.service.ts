@@ -40,4 +40,16 @@ export class UserManagementService {
     return this.http.post(appsettings.api_url + 'users/login', loginUser);
   }
 
+  removeUser(userId: number){
+    return this.http.delete(appsettings.api_url + 'users/' + userId);
+  }
+
+  addUser(user: UsersModel){
+    return this.http.post(appsettings.api_url + 'users', user);
+  }
+
+  updateUser(user: UsersModel){
+    return this.http.put(appsettings.api_url + 'users', user);
+  }
+
 }

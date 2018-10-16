@@ -12,7 +12,19 @@ export class LgasManagementService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers() {
+  getAllLgas() {
     return this.http.get<LgaModel[]>(appsettings.api_url + 'lgas');
+  }
+
+  newLga(lga: LgaModel){
+    return this.http.post(appsettings.api_url + 'lgas', lga);
+  }
+
+  updateLga(lga: LgaModel){
+    return this.http.put(appsettings.api_url + 'lgas', lga);
+  }
+
+  deleteLga(lgaId: number){
+    return this.http.delete(appsettings.api_url + 'lgas/' + lgaId);
   }
 }

@@ -6,6 +6,8 @@ import { MedicalCentresService } from '../services/medical-centres.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { WardsModel } from '../models/WardsModel';
 import { WardsManagementService } from '../services/wards-management.service';
+import { ResponseModel } from '../models/ResponseModel';
+import swal from 'sweetalert'; 
 
 @Component({
   selector: 'app-medical-centres',
@@ -74,27 +76,25 @@ export class MedicalCentresComponent implements OnInit {
   }
 
   // Method to remove an element from the array
-  removeCentre(element, filterValue){
-    // Get the index of the element
-    let i = this.centres.findIndex(x => x.settlement == element.settlement);
-
-    // Remove element from the countries array
-    this.centres.splice(i, 1);
-
-    // Rebind dataSource data array to countries array
-    this.dataSource = new MatTableDataSource(this.centres);
-    
-    // Check if the data table is filtered, if filtered then filter the returned data again
-    if(filterValue != undefined){
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    // Update the number of total available records in the array
-    this.updateTotal();
-
-    // Re-initialize pagination and sorting
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  removeItem(element, filterValue){
+    swal({
+      title: 'Are you sure?',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: {
+          text: 'Delete'
+        }
+      }
+    }).then((value) => {
+      if(value){
+        this.service.deleteItem(element.settlementId).subscribe((data: ResponseModel) => {
+          swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+          this.getAll();
+        })
+      }
+    });
   }
 
   // Method to return selected centre details
@@ -114,20 +114,47 @@ export class MedicalCentresComponent implements OnInit {
   }
 
   addItem(){
+    let item = new MedicalCentresModel;
+    item.settlement = this.settlement;
+    item.wardId = this.wardId;
+    item.insertUserId = +localStorage.getItem('userId');
+    this.service.newItem(item).subscribe((data: ResponseModel) => {
+      swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+      this.getAll();
+    })
+    this.closeModal('Added');
+  }
+
+  updateItem(){
+    let item = new MedicalCentresModel;
+    item.settlementId = this.settlementId;
+    item.settlement = this.settlement;
+    item.wardId = this.wardId;
+    item.updateUserId = +localStorage.getItem('userId');
+    this.service.updateItem(item).subscribe((data: ResponseModel) => {
+      swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+      this.getAll();
+    })
     this.closeModal('Added');
   }
 
   openAddModal(content){
+    this.settlementId = 0;
     this.settlement = '';
     this.ward = '';
+    this.wardId = 0;
     this.modalTitle = "Add New Settlement";
+    this.editMode = false;
     this.openModal(content);
   }
 
   openEditModal(content, element){
+    this.settlementId = element.settlementId;
     this.settlement = element.settlement;
+    this.wardId = element.wardId;
     this.ward = element.ward;
     this.modalTitle = "Edit Settlement";
+    this.editMode = true;
     this.openModal(content);
   }
 

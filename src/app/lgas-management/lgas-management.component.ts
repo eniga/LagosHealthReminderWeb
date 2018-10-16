@@ -3,6 +3,8 @@ import { LgasManagementService } from '../services/lgas-management.service';
 import { LgaModel } from '../models/LgaModel';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ResponseModel } from '../models/ResponseModel';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-lgas-management',
@@ -22,8 +24,12 @@ export class LgasManagementComponent implements OnInit {
   isLoading = true;
 
   // Values for modal
+  lgaId: number;
   lga: string;
+  stateId: number;
   state: string;
+  insertUserId = localStorage.getItem('userId');
+  updateUserId = localStorage.getItem('userId');
 
   // For Modal
   closeResult: string;
@@ -37,7 +43,7 @@ export class LgasManagementComponent implements OnInit {
   }
 
   getAll(){
-    this.service.getAllUsers().subscribe((data: LgaModel[]) => {
+    this.service.getAllLgas().subscribe((data: LgaModel[]) => {
       this.lgas = data;
       this.dataSource = new MatTableDataSource(this.lgas);
       this.dataSource.paginator = this.paginator;
@@ -57,27 +63,25 @@ export class LgasManagementComponent implements OnInit {
     }
 
   // Method to remove an element from the array
-  removeItem(element, filterValue){
-    // Get the index of the element
-    let i = this.lgas.findIndex(x => x.lga == element.lga);
-
-    // Remove element from the countries array
-    this.lgas.splice(i, 1);
-
-    // Rebind dataSource data array to countries array
-    this.dataSource = new MatTableDataSource(this.lgas);
-    
-    // Check if the data table is filtered, if filtered then filter the returned data again
-    if(filterValue != undefined){
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    // Update the number of total available records in the array
-    this.updateTotal();
-
-    // Re-initialize pagination and sorting
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  removeItem(element){
+    swal({
+      title: 'Are you sure?',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: {
+          text: 'Delete'
+        }
+      }
+    }).then((value) => {
+      if(value){
+        this.service.deleteLga(element.lgaId).subscribe((data: ResponseModel) => {
+          swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+          this.getAll();
+        })
+      }
+    });
   }
 
   // Method to return selected centre details
@@ -99,20 +103,45 @@ export class LgasManagementComponent implements OnInit {
 
   // Method to Add new Centre
   addItem(){
+    let item = new LgaModel;
+    item.lga = this.lga;
+    item.stateId = this.stateId;
+    item.insertUserId = +this.insertUserId;
+    this.service.newLga(item).subscribe((data: ResponseModel) => {
+      swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+      this.getAll();
+    });
     this.closeModal('Added');
+  }
+
+  updateItem(){
+    let item = new LgaModel;
+    item.lgaId = this.lgaId;
+    item.lga = this.lga;
+    item.stateId = this.stateId;
+    item.updateUserId = +this.updateUserId;
+    this.service.updateLga(item).subscribe((data: ResponseModel) => {
+      swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+      this.getAll();
+    })
+    this.closeModal('Updated');
   }
 
   openAddModal(content){
     this.lga = '';
-    this.state = 'Lagos'
+    this.stateId = 1;
+    this.state = 'Lagos';
     this.modalTitle = 'Add New LGA';
+    this.editMode = false;
     this.openModal(content);
   }
 
   openEditModal(content, element){
+    this.lgaId = element.lgaId;
     this.lga = element.lga;
-    this.state = element.state;
+    this.stateId = element.stateId;
     this.modalTitle = 'Edit LGA';
+    this.editMode = true;
     this.openModal(content);
   }
 

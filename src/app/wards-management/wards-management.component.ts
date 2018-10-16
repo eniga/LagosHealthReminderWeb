@@ -48,7 +48,7 @@ export class WardsManagementComponent implements OnInit {
   }
 
   loadLga(){
-    this.lgaService.getAllUsers().subscribe((data: LgaModel[]) => {
+    this.lgaService.getAllLgas().subscribe((data: LgaModel[]) => {
       this.lgas = data;
     })
   }
@@ -63,9 +63,6 @@ export class WardsManagementComponent implements OnInit {
     });
   }
 
-  addWard(){
-  }
-
   // Method to filter the displayed data, used for search
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -77,27 +74,25 @@ export class WardsManagementComponent implements OnInit {
   }
 
   // Method to remove an element from the array
-  removeWard(element, filterValue){
-    // Get the index of the element
-    let i = this.wards.findIndex(x => x.wardId == element.wardId);
-
-    // Remove element from the countries array
-    this.wards.splice(i, 1);
-
-    // Rebind dataSource data array to countries array
-    this.dataSource = new MatTableDataSource(this.wards);
-    
-    // Check if the data table is filtered, if filtered then filter the returned data again
-    if(filterValue != undefined){
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-
-    // Update the number of total available records in the array
-    this.updateTotal();
-
-    // Re-initialize pagination and sorting
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  removeItem(element){
+    swal({
+      title: 'Are you sure?',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: {
+          text: 'Delete'
+        }
+      }
+    }).then((value) => {
+      if(value){
+        this.service.removeWard(element.wardId).subscribe((data: ResponseModel) => {
+          swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+          this.getAllWards();
+        })
+      }
+    });
   }
 
   // Method to return selected centre details
@@ -122,7 +117,10 @@ export class WardsManagementComponent implements OnInit {
     item.ward = this.ward;
     item.lgaId = this.lgaId;
     item.insertUserId = +localStorage.getItem('userId');
-    console.log(item);
+    this.service.newWard(item).subscribe((data: ResponseModel) => {
+      swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+      this.getAllWards();
+    });
     this.closeModal('Added');
   }
 

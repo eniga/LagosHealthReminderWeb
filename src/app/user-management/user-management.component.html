@@ -77,7 +77,7 @@
                       <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditUser(newuser, element)">
                         <i class="material-icons">edit</i>
                       </button>
-                      <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
+                      <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element)">
                         <i class="material-icons">close</i>
                       </button>
                     </td>
@@ -151,19 +151,10 @@
         <input type="password" class="form-control" [(ngModel)]="password2">
       </div>
       <div class="form-group">
-          <label>Email </label>
-          <input class="form-control" [(ngModel)]="email">
-        </div>
-      <div class="form-group">
-          <label>Role </label>
-        <select class="form-control" (change)="filterForeCasts($event.target.value)">
-            <option>--Select Role--</option>
-            <option *ngFor="let role of roles" value={{role.roleId}} selected="{{ role.roleId === roleId ? 'selected' : ''}}">
-                {{role.roleName}}
-            </option>
-        </select>
+        <label>Email </label>
+        <input class="form-control" [(ngModel)]="email">
       </div>
-      <div class="form-group pull-right">
+      <div class="form-group pull-right" *ngIf="editMode">
           <div class="form-check">
               <label class="form-check-label">
                   <input class="form-check-input" type="checkbox" [(ngModel)]="isActive" value="{{isActive}}" checked="{{ isActive ? 'checked': ''}}">
@@ -199,7 +190,7 @@
       </div>
       <div class="form-group">
         <label>New Password</label>
-        <input class="form-control" [(ngModel)]="password">
+        <input class="form-control" [(ngModel)]="password" type="password">
       </div>
     </div>
     <div class="modal-footer">

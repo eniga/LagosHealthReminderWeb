@@ -15,4 +15,16 @@ export class MedicalCentresService {
   getAll(){
     return this.http.get<MedicalCentresModel[]>(appsettings.api_url + 'settlements')
   }
+
+  newItem(settlement: MedicalCentresModel){
+    return this.http.post(appsettings.api_url + 'settlements', settlement);
+  }
+
+  updateItem(settlement: MedicalCentresModel){
+    return this.http.put(appsettings.api_url + 'settlements', settlement);
+  }
+
+  deleteItem(settlementId: number){
+    return this.http.delete(appsettings.api_url + 'settlements/' + settlementId);
+  }
 }

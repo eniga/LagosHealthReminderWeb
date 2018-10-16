@@ -47,7 +47,7 @@
                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newlga, element)">
                       <i class="material-icons">edit</i>
                     </button>
-                    <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
+                    <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element)">
                       <i class="material-icons">close</i>
                     </button>
                   </td>
@@ -87,7 +87,8 @@
           </div>
           <div class="divider"></div>
           <div class="right-side">
-            <button type="button" class="btn btn-success" (click)="addItem()">Save</button>
+              <button type="button" class="btn btn-success" (click)="updateItem()" *ngIf="editMode">Update</button>
+              <button type="button" class="btn btn-success" (click)="addItem()" *ngIf="!editMode">Save</button>
           </div>
       </div>
     </ng-template>
