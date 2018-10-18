@@ -10,8 +10,8 @@
   </a>
 </div>
 <div class="sidebar-wrapper">
-  <ul class="nav">
-      <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+  <ul class="nav" *ngFor="let menuItem of menuItems">
+      <li routerLinkActive="active"  class="{{menuItem.class}} nav-item" *ngIf="menuItem.visible">
           <a [routerLink]="[menuItem.path]">
               <i class="now-ui-icons {{menuItem.icon}}"></i>
               <p>{{menuItem.title}}</p>

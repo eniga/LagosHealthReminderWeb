@@ -42,7 +42,7 @@ export class MedicalCentresComponent implements OnInit {
   constructor(private service: MedicalCentresService, private wardService: WardsManagementService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.getAll()
+    this.getAll();
     this.getAllWards();
   }
 

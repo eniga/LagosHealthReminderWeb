@@ -3,20 +3,29 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">Service Types Management</h5>
+          <h5 class="card-title">List of Service Kinds for <span class="text-info">{{  serviceType }}</span></h5>
           <button type="button" class="btn btn-success" (click)="openAddModal(newsettlement)">Add New</button>
+          <button type="button" class="btn btn-info" [routerLink]="['/medical-services']">
+            <i class="now-ui-icons arrows-1_minimal-left"></i> Back to Service Types
+          </button>
           <mat-form-field class="col-sm-3 pull-right">
               <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
             </mat-form-field>
         </div>
         <div class="card-body">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-hover" matSort>
-                <!-- Service Type-->
-                <ng-container matColumnDef="serviceTypeName">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Service Type</th>
-                  <td mat-cell *matCellDef="let element"> {{ element.serviceTypeName }} </td>
+                <!-- Service Kind-->
+                <ng-container matColumnDef="serviceKindName">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Service Kinds</th>
+                  <td mat-cell *matCellDef="let element"> {{ element.serviceKindName }} </td>
                 </ng-container>
     
+                <!-- Service Type-->
+                <ng-container matColumnDef="serviceType">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Service Type</th>
+                  <td mat-cell *matCellDef="let element"> {{ element.serviceType }} </td>
+                </ng-container>
+
                   <!-- Created By -->
                 <ng-container matColumnDef="insertUser">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
@@ -39,14 +48,13 @@
                       <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
                         <i class="material-icons">close</i>
                       </button>
-                      <button type="button" rel="tooltip" title="View Kinds" class="btn btn-custom" (click)="viewServices(element)">View Services</button>
                     </td>
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
-              <div *ngIf="types.length === 0 && !isLoading" class="text-center">No data</div>
+              <div *ngIf="kinds.length === 0 && !isLoading" class="text-center">No data</div>
               <div *ngIf="isLoading" class="text-center">Loading....</div>
               <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>  
         </div>
@@ -64,9 +72,13 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label>Service Type</label>
-        <input class="form-control" [(ngModel)]="serviceTypeName">
+        <label>Service Kind</label>
+        <input class="form-control" [(ngModel)]="serviceKindName">
       </div>
+      <div class="form-group">
+        <label>Service Type</label>
+        <input class="form-control" [(ngModel)]="serviceType" disabled="disabled">
+    </div>
     </div>
     <div class="modal-footer">
         <div class="left-side">

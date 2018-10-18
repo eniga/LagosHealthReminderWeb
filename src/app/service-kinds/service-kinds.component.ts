@@ -3,33 +3,34 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ResponseModel } from '../models/ResponseModel';
 import swal from 'sweetalert'; 
-import { ServiceTypesModel } from '../models/ServicesModel';
+import { ServiceTypesModel, ServiceKindsModel } from '../models/ServicesModel';
 import { MedicalServicesService } from '../services/medical-services.service';
-import { Router } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-medical-services',
-  templateUrl: './medical-services.component.html',
-  styleUrls: ['./medical-services.component.scss']
+  selector: 'app-service-kinds',
+  templateUrl: './service-kinds.component.html',
+  styleUrls: ['./service-kinds.component.scss']
 })
-export class MedicalServicesComponent implements OnInit {
-
+export class ServiceKindsComponent implements OnInit {
   // Array of Medical Centres
-  displayedColumns: string[] = ['serviceTypeName', 'insertDate', 'insertUser', 'actions'];
-  dataSource: MatTableDataSource<ServiceTypesModel>;
+  displayedColumns: string[] = ['serviceKindName','serviceType', 'insertDate', 'insertUser', 'actions'];
+  dataSource: MatTableDataSource<ServiceKindsModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   types: ServiceTypesModel[] = [];
+  kinds: ServiceKindsModel[] = [];
   filterValue: string;
   total: number;
   isLoading = true;
 
   // Values for modal
+  serviceKindId: number;
+  serviceKindName: string;
   serviceTypeId: number;
-  serviceTypeName: string;
+  serviceType: string;
   insertUserId: number;
   insertUser: string;
   updateUserId: number;
@@ -40,16 +41,32 @@ export class MedicalServicesComponent implements OnInit {
   editMode = false;
   modalTitle: string;
 
-  constructor(private service: MedicalServicesService, private modalService: NgbModal, private router: Router) { }
+  constructor(private service: MedicalServicesService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) {
+    this.route.params.subscribe(res => this.serviceTypeId = res.id);
+   }
 
   ngOnInit() {
-    this.getAll()
+    this.getAllKinds();
+    this.getType();
   }
 
-  getAll(){
+  getType(){
     this.service.getAllTypes().subscribe((data: ServiceTypesModel[]) => {
-      this.types = data;
-      this.dataSource = new MatTableDataSource(this.types);
+      if(data.length > 0){
+        console.log(data);
+        let typeData = data.filter(x => +x.serviceTypeId === +this.serviceTypeId);
+        if(typeData.length > 0)
+        {
+          this.serviceType = typeData[0].serviceTypeName;
+        }
+      }
+    })
+  }
+
+  getAllKinds(){
+    this.service.getAllKinds(this.serviceTypeId).subscribe((data: ServiceKindsModel[]) => {
+      this.kinds = data;
+      this.dataSource = new MatTableDataSource(this.kinds);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.updateTotal();
@@ -80,9 +97,9 @@ export class MedicalServicesComponent implements OnInit {
         }
       }).then((value) => {
         if(value){
-          this.service.deleteType(element.serviceTypeId).subscribe((data: ResponseModel) => {
+          this.service.deleteKind(element.serviceKindId).subscribe((data: ResponseModel) => {
             swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
-            this.getAll();
+            this.getAllKinds();
           })
         }
       });
@@ -109,39 +126,45 @@ export class MedicalServicesComponent implements OnInit {
     }
   
     addItem(){
-      let item = new ServiceTypesModel;
-      item.serviceTypeName = this.serviceTypeName;
+      if(this.serviceKindName.length < 1){
+        swal('Error', 'Kindly fill in a Service Name', 'error');
+        return false;
+      }
+      let item = new ServiceKindsModel;
+      item.serviceKindName = this.serviceKindName;
+      item.serviceTypeId = this.serviceTypeId;
       item.insertUserId = +localStorage.getItem('userId');
-      this.service.newType(item).subscribe((data: ResponseModel) => {
+      this.service.newKind(item).subscribe((data: ResponseModel) => {
         swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
-        this.getAll();
+        this.getAllKinds();
       })
       this.closeModal('Added');
     }
   
     updateItem(){
-      let item = new ServiceTypesModel;
+      let item = new ServiceKindsModel;
+      item.serviceKindId = this.serviceKindId;
+      item.serviceKindName = this.serviceKindName;
       item.serviceTypeId = this.serviceTypeId;
-      item.serviceTypeName = this.serviceTypeName;
       item.updateUserId = +localStorage.getItem('userId');
-      this.service.updateType(item).subscribe((data: ResponseModel) => {
+      this.service.updateKind(item).subscribe((data: ResponseModel) => {
         swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
-        this.getAll();
+        this.getAllKinds();
       })
       this.closeModal('Added');
     }
   
     openAddModal(content){
-      this.serviceTypeId = 0;
-      this.serviceTypeName = '';
+      this.serviceKindId = 0;
+      this.serviceKindName = '';
       this.modalTitle = "Add New Service Type";
       this.editMode = false;
       this.openModal(content);
     }
   
     openEditModal(content, element){
-      this.serviceTypeId = element.serviceTypeId;
-      this.serviceTypeName = element.serviceTypeName;
+      this.serviceKindId = element.serviceKindId;
+      this.serviceKindName = element.serviceKindName;
       this.modalTitle = "Edit Service Type";
       this.editMode = true;
       this.openModal(content);

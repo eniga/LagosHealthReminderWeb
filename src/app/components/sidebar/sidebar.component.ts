@@ -5,14 +5,15 @@ declare interface RouteInfo {
   title: string;
   icon: string;
   class: string;
+  visible: boolean;
 }
 export const ROUTES: RouteInfo[] = [
-  { path: '/dashboard', title: 'Dashboard',  icon: 'design_app', class: '' },
-  { path: '/patients', title: 'Patient Records', icon: 'files_single-copy-04', class: '' },
-  { path: '/medical-centres', title: 'Settlement Management',  icon:'location_map-big', class: '' },
-  { path: '/medical-services', title: 'Medical Services',  icon:'design_bullet-list-67', class: '' },
-  { path: '/qr-management', title: 'QR Management', icon: 'education_paper', class: ''},
-  { path: '/user-management', title: 'User Management',  icon:'users_single-02', class: '' }
+  { path: '/dashboard', title: 'Dashboard',  icon: 'design_app', class: '', visible: true },
+  { path: '/patients', title: 'Patient Records', icon: 'files_single-copy-04', class: '', visible: true },
+  { path: '/medical-centres', title: 'Settlement Management',  icon:'location_map-big', class: '', visible: true },
+  { path: '/medical-services', title: 'Medical Services',  icon:'design_bullet-list-67', class: '', visible: true },
+  { path: '/qr-management', title: 'QR Management', icon: 'education_paper', class: '', visible: true},
+  { path: '/user-management', title: 'User Management',  icon:'users_single-02', class: 'disable', visible: true }
 ];
 
 @Component({

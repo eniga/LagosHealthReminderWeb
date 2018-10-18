@@ -18,7 +18,8 @@ const routes: Routes = [
       { path: 'wards', loadChildren: '../wards-management/wards-management.module#WardsManagementModule' },
       { path: 'lgas', loadChildren: '../lgas-management/lgas-management.module#LgasManagementModule' },
       { path: 'roles', loadChildren: '../roles/roles.module#RolesModule' },
-      { path: 'role-permissions', loadChildren: '../role-permissions/role-permissions.module#RolePermissionsModule' }
+      { path: 'role-permissions', loadChildren: '../role-permissions/role-permissions.module#RolePermissionsModule' },
+      { path: 'kinds/:id', loadChildren: '../service-kinds/service-kinds.module#ServiceKindsModule'}
     ]
   }
 ]
