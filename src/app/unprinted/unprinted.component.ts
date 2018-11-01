@@ -68,8 +68,8 @@ export class UnprintedComponent implements OnInit {
           <style>
           .thumbnail, img {
               display: block;
-              width: 120px;
-              height: 120px;
+              width: 110px;
+              height: 110px;
               float: left;
           }
           </style>

@@ -5,7 +5,11 @@
         <div class="card-header">
           <h5 class="title">Qr Code Management</h5>
           <button type="button" class="btn btn-success" [routerLink]="['/qr-management']">View All</button>
-          <button type="button" class="btn btn-custom" (click)="print()" *ngIf="!printed && qrcodes.length > 0">Print</button>
+          <button type="button" class="btn btn-custom" (click)="print()" *ngIf="!printed && qrcodes.length > 0">
+            <i class="fa fa-print" aria-hidden="true"></i>
+            Print
+          </button>
+          <cite>(Print outs are at 150 QR Codes per page on an A4 paper)</cite>
         </div>
         <div class="card-body">
             <div id="print-section" class="row" *ngIf="!printed">

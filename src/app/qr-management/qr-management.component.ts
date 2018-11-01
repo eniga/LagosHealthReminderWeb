@@ -44,6 +44,8 @@ export class QrManagementComponent implements OnInit {
     editMode = false;
     modalTitle: string;
     numberOfCodes: number;
+    numberOfPages: number;
+    pageSize: number = 150;
   
   
 
@@ -82,7 +84,7 @@ export class QrManagementComponent implements OnInit {
 
   generateCode(){
     let request = new QrCodeRequestModel;
-    request.numberOfCodes = this.numberOfCodes;
+    request.numberOfCodes = this.numberOfPages * this.pageSize;
     request.insertUserId = +localStorage.getItem('userId');
     this.qrService.generateCode(request).subscribe((data: QrCodeModel[]) => {
       if(data.length > 0){
@@ -97,6 +99,7 @@ export class QrManagementComponent implements OnInit {
 
   openGenerate(content){
     this.numberOfCodes = 0;
+    this.numberOfPages = 0;
     this.openModal(content);
   }
 
