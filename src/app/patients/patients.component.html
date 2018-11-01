@@ -4,8 +4,6 @@
         <div class="card">
           <div class="card-header">
             <h5 class="card-title">Patients</h5>
-            <button type="button" class="btn btn-success" (click)="openAddModal(classic)">Add New</button>
-            <button type="button" class="btn btn-custom disabled">Appointments</button>
             <mat-form-field class="col-sm-3 pull-right">
               <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
             </mat-form-field>
@@ -71,9 +69,7 @@
                   <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef>Actions</th>
                       <td mat-cell *matCellDef="let element;">
-                          <button type="button" rel="tooltip" title="View More" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal">
-                              <i class="material-icons">edit</i>
-                            </button>
+                        <button type="button" class="btn btn-custom disabled">Appointments</button>
                         <button type="button" rel="tooltip" title="Edit" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editItem(element)">
                           <i class="material-icons">edit</i>
                         </button>

@@ -1,0 +1,30 @@
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Qr Code Management</h5>
+          <button type="button" class="btn btn-success" [routerLink]="['/qr-management']">View All</button>
+          <button type="button" class="btn btn-custom" (click)="print()" *ngIf="!printed && qrcodes.length > 0">Print</button>
+        </div>
+        <div class="card-body">
+            <div id="print-section" class="row" *ngIf="!printed">
+              <div class="thumbnail" *ngFor="let item of qrcodes">
+                <img [src]="'data:image/jpg;base64,' + item.qrCodeImage">
+              </div>
+            </div>
+            <div *ngIf="qrcodes.length === 0 && !isLoading" class="text-center">No data</div>
+            <div *ngIf="isLoading" class="text-center">Loading....</div>
+            <div class="row" *ngIf="printed">
+              <div class="col-sm-12 text-center">
+                <strong>Printed ??</strong>
+                <button class="btn btn-success" (click)="confirmPrinted(true)">Successful</button>
+                <button class="btn btn-danger" (click)="confirmPrinted(false)">Failed</button>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

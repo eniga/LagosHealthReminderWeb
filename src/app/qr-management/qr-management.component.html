@@ -4,8 +4,8 @@
       <div class="card">
         <div class="card-header">
           <h5 class="title">Qr Code Management</h5>
-          <button type="button" class="btn btn-success">Generate New</button>
-          <button type="button" class="btn btn-custom" [routerLink]="['/roles']">Unprinted</button>
+          <button type="button" class="btn btn-success" (click)="openGenerate(classic)">Generate New</button>
+          <button type="button" class="btn btn-custom" [routerLink]="['/unprinted']">Unprinted</button>
           <mat-form-field class="col-sm-3 pull-right">
               <input matInput class="form-control" placeholder="Filter..." [(ngModel)]="filterValue">
             </mat-form-field>
@@ -35,10 +35,10 @@
                   </ng-container>
 
                   <!-- Role -->
-                <ng-container matColumnDef="status">
+                <ng-container matColumnDef="printStatus">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
                   <td mat-cell *matCellDef="let element"> 
-                    <span *ngIf="element.roleId">{{ element.status }}</span>
+                    <span>{{ element.printStatus === 1 ? 'Generated' : element.printStatus === 2 ? 'Printed' : 'Reprinted' }}</span>
                   </td>
                 </ng-container>
   
@@ -68,7 +68,7 @@
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
               <div *ngIf="qrcodes.length === 0 && !isLoading" class="text-center">No data</div>
-              <div *ngIf="isLoading" class="text-center text-danger">DB Error, Contact Administrator !!!</div>
+              <div *ngIf="isLoading" class="text-center">Loading....</div>
               <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator> 
         </div>
       </div>
@@ -76,3 +76,27 @@
 
   </div>
 </div>
+
+<ng-template #classic let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h5 class="modal-title text-center">Generate QR Code</h5>
+        <button type="button" class="close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Number of QR Codes</label>
+        <input class="form-control" type="number" [(ngModel)]="numberOfCodes">
+      </div>
+    </div>
+    <div class="modal-footer">
+        <div class="left-side">
+            <button type="button" class="btn btn-default" (click)="c('Close click')">Cancel</button>
+        </div>
+        <div class="divider"></div>
+        <div class="right-side">
+          <button type="button" class="btn btn-success" (click)="generateCode()">Generate</button>
+        </div>
+    </div>
+  </ng-template>

@@ -14,11 +14,16 @@ export class QrCodeModel {
     updateUserId: number;
     updateUser: string;
     updateDate: Date;
-    status: QrCodeStatus;
+    printStatus: QrCodeStatus;
 }
 
 export enum QrCodeStatus {
     Generated = 1,
     Printed = 2,
     Reprinted = 3
+}
+
+export class QrCodeRequestModel {
+    numberOfCodes: number;
+    insertUserId: number;
 }
