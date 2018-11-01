@@ -12,6 +12,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
+
+import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
+
 
 import {MatGridListModule} from '@angular/material/grid-list';
 
@@ -35,6 +39,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     RouterModule,
     MatGridListModule,
     MatCardModule,
+    MomentModule,
+    NgIdleKeepaliveModule.forRoot(),
     NgbModule.forRoot()
   ],
   providers: [
