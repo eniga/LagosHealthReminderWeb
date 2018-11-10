@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class MedicalServicesComponent implements OnInit {
 
   // Array of Medical Centres
-  displayedColumns: string[] = ['serviceTypeName', 'insertDate', 'insertUser', 'actions'];
+  displayedColumns: string[] = ['serviceTypeName', 'insertDate', 'insertUser', 'smsMessage', 'actions'];
   dataSource: MatTableDataSource<ServiceTypesModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,6 +39,9 @@ export class MedicalServicesComponent implements OnInit {
   closeResult: string;
   editMode = false;
   modalTitle: string;
+
+  defaultMessage: string = 'Dear [firstname], your appointment is scheduled for '
+  smsMessage: string;
 
   constructor(private service: MedicalServicesService, private modalService: NgbModal, private router: Router) { }
 
@@ -144,6 +147,7 @@ export class MedicalServicesComponent implements OnInit {
       this.serviceTypeName = element.serviceTypeName;
       this.modalTitle = "Edit Service Type";
       this.editMode = true;
+      this.smsMessage = element.smsMessage ? element.smsMessage : 'Sample: Dear [firstname], your ' + element.serviceTypeName + ' appointment has been scheduled for tomorrow.';
       this.openModal(content);
     }
   
@@ -172,5 +176,16 @@ export class MedicalServicesComponent implements OnInit {
     filterForeCasts(event) {
     }
   
-
+    updateMessage(){
+      let item = new ServiceTypesModel;
+      item.serviceTypeId = this.serviceTypeId;
+      item.smsMessage = this.smsMessage;
+      item.updateUserId = +localStorage.getItem('userId');
+      this.service.updateTypeSMSMessage(item).subscribe((data: ResponseModel) => {
+        swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+        this.getAll();
+        this.smsMessage = '';
+      })
+      this.closeModal('Added');
+    }
 }

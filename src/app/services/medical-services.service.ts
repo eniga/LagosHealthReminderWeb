@@ -41,4 +41,8 @@ export class MedicalServicesService {
   deleteType(serviceTypeId: number){
     return this.http.delete(appsettings.api_url + 'ServiceTypes/' + serviceTypeId);
   }
+
+  updateTypeSMSMessage(serviceType: ServiceTypesModel){
+    return this.http.put(appsettings.api_url + 'ServiceTypes/smsmessage', serviceType);
+  }
 }

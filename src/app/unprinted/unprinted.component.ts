@@ -67,10 +67,18 @@ export class UnprintedComponent implements OnInit {
         <head>
           <style>
           .thumbnail, img {
-              display: block;
-              width: 110px;
-              height: 110px;
-              float: left;
+            display: block;
+            width: 70px;
+            height: 70px;
+            float: left;
+            page-break-inside: avoid;
+          }
+          @page {
+            page-break-after: always;
+            margin-top: 10px;
+            margin-botton: 5px;
+            margin-left: 30px;
+            margin-right: 10px;
           }
           </style>
         </head>

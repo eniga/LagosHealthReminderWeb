@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import swal from 'sweetalert'; 
 import { UserManagementService } from '../services/user-management.service';
 import { LoginUserModel, UsersModel } from '../models/UsersModel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
 
-  constructor(private service: UserManagementService) { }
+  constructor(private service: UserManagementService, private router: Router) { }
 
   ngOnInit() {
       var body = document.getElementsByTagName('body')[0];
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem('userId', data.userId.toString());
                 localStorage.setItem('displayName', data.displayName);
                 localStorage.setItem('roleName', data.roleName);
+                this.router.navigate(['/dashboard']);
               } else {
                 swal('User is disabled', 'Kindly contact portal Administrator', 'error');
               }

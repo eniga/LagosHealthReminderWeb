@@ -20,7 +20,8 @@ const routes: Routes = [
       { path: 'roles', loadChildren: '../roles/roles.module#RolesModule' },
       { path: 'role-permissions', loadChildren: '../role-permissions/role-permissions.module#RolePermissionsModule' },
       { path: 'kinds/:id', loadChildren: '../service-kinds/service-kinds.module#ServiceKindsModule'},
-      { path: 'unprinted', loadChildren: '../unprinted/unprinted.module#UnprintedModule'}
+      { path: 'unprinted', loadChildren: '../unprinted/unprinted.module#UnprintedModule'},
+      { path: 'phc', loadChildren: '../phc/phc.module#PhcModule'}
     ]
   }
 ]

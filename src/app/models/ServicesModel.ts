@@ -24,4 +24,5 @@ export class ServiceTypesModel {
     updateUserId: number;
     updateUser: string;
     updateDate: Date;
+    smsMessage: string;
 }

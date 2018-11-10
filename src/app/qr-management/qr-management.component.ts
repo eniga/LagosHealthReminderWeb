@@ -27,6 +27,7 @@ export class QrManagementComponent implements OnInit {
     total: number;
     qrcodes: QrCodeModel[] = [];
     isLoading = true;
+    unprinted: QrCodeModel[] = [];
   
     qrCodeId: number;
     qrCode: string = '';
@@ -46,7 +47,7 @@ export class QrManagementComponent implements OnInit {
     numberOfCodes: number;
     numberOfPages: number;
     pageSize: number = 150;
-  
+    maxPage: number = 10;
   
 
   constructor(private modalService: NgbModal, private service: PatientsService, private qrService: QrManagementService, private router: Router) { }
@@ -58,6 +59,7 @@ export class QrManagementComponent implements OnInit {
   getAllCodes(){
     this.qrService.getAllCodes().subscribe((data: QrCodeModel[]) => {
       this.qrcodes = data;
+      this.unprinted = data.filter(x => x.printStatus == 1);
       this.dataSource = new MatTableDataSource(this.qrcodes);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -83,15 +85,27 @@ export class QrManagementComponent implements OnInit {
   }
 
   generateCode(){
+    if(this.numberOfPages < 1){
+      swal('Error', 'Kindly select to generate 1 or more pages', 'error');
+      return false;
+    }
     let request = new QrCodeRequestModel;
     request.numberOfCodes = this.numberOfPages * this.pageSize;
     request.insertUserId = +localStorage.getItem('userId');
-    this.qrService.generateCode(request).subscribe((data: QrCodeModel[]) => {
-      if(data.length > 0){
+    let totalcodes = request.numberOfCodes + this.unprinted.length;
+    let totalprint = this.maxPage * this.pageSize;
+    if(totalcodes > totalprint){
+      swal('Warning', 'You can\'t have more than ' + this.maxPage + ' unprinted pages in the system. You already have ' + this.unprinted.length/this.pageSize + ' number of pages unprinted.', 'warning');
+      return false;
+    }
+    this.qrService.generateCode(request).subscribe((data: ResponseModel) => {
+      if(data.status){
         // Redirect to unprinted
-        this.router.navigate(['/unprinted']);
+        //this.router.navigate(['/unprinted']);
+        swal('Success', data.statusMessage, 'success');
+        this.getAllCodes();
       } else {
-        swal('Error', 'System malfunction', 'error');
+        swal('Error', data.statusMessage, 'error');
       }
     })
     this.closeModal('Closed');

@@ -10,6 +10,7 @@
             </button>
             <button type="button" class="btn btn-custom" [routerLink]="['/wards']">Manage Wards</button>
             <button type="button" class="btn btn-custom disabled">Manage States</button>
+            <button type="button" class="btn btn-custom" [routerLink]="['/phc']">Manage PHCs</button>
             <mat-form-field class="col-sm-3 pull-right">
                 <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
               </mat-form-field>
