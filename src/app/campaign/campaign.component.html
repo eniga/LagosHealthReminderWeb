@@ -3,14 +3,8 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="card-title">Wards</h5>
-            <button type="button" class="btn btn-success" (click)="openAddModal(newward)">Add New</button>
-            <button type="button" class="btn btn-info" [routerLink]="['/medical-centres']">
-              <i class="now-ui-icons arrows-1_minimal-left"></i> Back to Settlements
-            </button>
-            <button type="button" class="btn btn-custom" [routerLink]="['/lgas']">Manage LGAs</button>
-            <button type="button" class="btn btn-custom disabled">Manage States</button>
-            <button type="button" class="btn btn-custom" [routerLink]="['/phc']">Manage PHCs</button>
+            <h5 class="card-title">Campaign Messages</h5>
+            <button type="button" class="btn btn-success" (click)="openAddModal(newcampaign)">Add New</button>
             <mat-form-field class="col-sm-3 pull-right">
               <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
             </mat-form-field>
@@ -18,10 +12,10 @@
           <div class="card-body">
               <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-hover" matSort>
    
-                  <!-- Ward -->
-                  <ng-container matColumnDef="ward">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ward</th>
-                      <td mat-cell *matCellDef="let element"> {{ element.ward }} </td>
+                  <!-- Message -->
+                  <ng-container matColumnDef="message">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Message</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.message }} </td>
                     </ng-container>
   
                     <!-- Local Government Area-->
@@ -30,12 +24,6 @@
                       <td mat-cell *matCellDef="let element"> {{ element.lga }} </td>
                     </ng-container>
   
-                    <!-- State -->
-                  <ng-container matColumnDef="state">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
-                      <td mat-cell *matCellDef="let element"> {{ element.state }} </td>
-                    </ng-container>
-    
                     <!-- Created By -->
                   <ng-container matColumnDef="insertUser">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
@@ -47,12 +35,18 @@
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
                       <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
                     </ng-container>
+
+                    <!-- Status -->
+                  <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.status }} </td>
+                    </ng-container>
     
                     <!-- Actions Column -->
                   <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef>Actions</th>
                       <td mat-cell *matCellDef="let element;">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newward,element)">
+                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newcampaign,element)">
                           <i class="material-icons">edit</i>
                         </button>
                         <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element)">
@@ -64,7 +58,7 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-                <div *ngIf="wards.length === 0 && !isLoading" class="text-center">No data</div>
+                <div *ngIf="campaign.length === 0 && !isLoading" class="text-center">No data</div>
                 <div *ngIf="isLoading" class="text-center">Loading....</div>
                 <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>  
           </div>
@@ -72,18 +66,14 @@
       </div>
     </div>
   </div>
-  <ng-template #newward let-c="close" let-d="dismiss">
+  <ng-template #newcampaign let-c="close" let-d="dismiss">
       <div class="modal-header">
-          <h5 class="modal-title text-center">{{ modalTitle }}</h5>
+          <h5 class="modal-title text-center">Send New Campaign Message</h5>
           <button type="button" class="close" (click)="d('Cross click')">
               <span aria-hidden="true">&times;</span>
           </button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label>Ward</label>
-          <input class="form-control" [(ngModel)]="ward">
-        </div>
         <div class="form-group">
             <label>Local Government Area</label>
             <select class="form-control" (change)="filterForeCasts($event.target.value)" [(ngModel)]="lgaId">
@@ -92,6 +82,11 @@
                   {{item.lga}}
               </option>
           </select>
+        </div>
+        <div class="form-group">
+          <label>SMS Message <i>(Starting with ...Dear [firstname])</i></label>
+          <textarea class="form-control" matInput [(ngModel)]="message" maxlength="160"></textarea>
+          <small class="form-text text-muted"><code>{{this.message ? this.message.length : 0}}</code> of <code>160</code> characters</small>
         </div>
       </div>
       <div class="modal-footer">

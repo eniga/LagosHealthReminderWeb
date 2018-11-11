@@ -21,7 +21,8 @@ const routes: Routes = [
       { path: 'role-permissions', loadChildren: '../role-permissions/role-permissions.module#RolePermissionsModule' },
       { path: 'kinds/:id', loadChildren: '../service-kinds/service-kinds.module#ServiceKindsModule'},
       { path: 'unprinted', loadChildren: '../unprinted/unprinted.module#UnprintedModule'},
-      { path: 'phc', loadChildren: '../phc/phc.module#PhcModule'}
+      { path: 'phc', loadChildren: '../phc/phc.module#PhcModule'},
+      { path: 'campaign', loadChildren: '../campaign/campaign.module#CampaignModule'}
     ]
   }
 ]

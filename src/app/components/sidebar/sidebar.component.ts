@@ -14,7 +14,7 @@ export const ROUTES: RouteInfo[] = [
   { path: '/medical-services', title: 'Medical Services',  icon:'design_bullet-list-67', class: '', visible: true },
   { path: '/qr-management', title: 'QR Management', icon: 'education_paper', class: '', visible: true},
   { path: '/user-management', title: 'User Management',  icon:'users_single-02', class: '', visible: true },
-  { path: '/message-management', title: 'Campaign Management', icon:'ui-1_email-85', class: '', visible: true}
+  { path: '/campaign', title: 'Campaign Management', icon:'ui-1_email-85', class: '', visible: true}
 ];
 
 @Component({
