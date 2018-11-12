@@ -15,7 +15,7 @@
                   <!-- Message -->
                   <ng-container matColumnDef="message">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Message</th>
-                      <td mat-cell *matCellDef="let element"> {{ element.message }} </td>
+                      <td mat-cell *matCellDef="let element"> {{ element.message.length > 30 ? element.message.substring(0,30) + '...' : element.message }} </td>
                     </ng-container>
   
                     <!-- Local Government Area-->
@@ -39,18 +39,15 @@
                     <!-- Status -->
                   <ng-container matColumnDef="status">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                      <td mat-cell *matCellDef="let element"> {{ element.status }} </td>
+                      <td mat-cell *matCellDef="let element"> {{ element.status === 0 ? 'Failed' : element.status === 1 ? 'Pending' : element.status === 2 ? 'Processing' : element.status === 3 ? 'Sent' : element.status }} </td>
                     </ng-container>
     
                     <!-- Actions Column -->
                   <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef>Actions</th>
                       <td mat-cell *matCellDef="let element;">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newcampaign,element)">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element)">
-                          <i class="material-icons">close</i>
+                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-custom" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newcampaign,element)">
+                          View
                         </button>
                       </td>
                     </ng-container>
@@ -68,7 +65,7 @@
   </div>
   <ng-template #newcampaign let-c="close" let-d="dismiss">
       <div class="modal-header">
-          <h5 class="modal-title text-center">Send New Campaign Message</h5>
+          <h5 class="modal-title text-center">{{ modalTitle }}</h5>
           <button type="button" class="close" (click)="d('Cross click')">
               <span aria-hidden="true">&times;</span>
           </button>
@@ -76,7 +73,7 @@
       <div class="modal-body">
         <div class="form-group">
             <label>Local Government Area</label>
-            <select class="form-control" (change)="filterForeCasts($event.target.value)" [(ngModel)]="lgaId">
+            <select class="form-control" (change)="filterForeCasts($event.target.value)" [(ngModel)]="lgaId" [disabled]="editMode">
               <option value='0'>--Select LGA--</option>
               <option *ngFor="let item of lgas" value='{{item.lgaId}}'>
                   {{item.lga}}
@@ -85,7 +82,7 @@
         </div>
         <div class="form-group">
           <label>SMS Message <i>(Starting with ...Dear [firstname])</i></label>
-          <textarea class="form-control" matInput [(ngModel)]="message" maxlength="160"></textarea>
+          <textarea class="form-control" matInput [(ngModel)]="message" maxlength="160" [disabled]="editMode" matTextareaAutosize matAutosizeMinRows=4 matAutosizeMaxRows=5></textarea>
           <small class="form-text text-muted"><code>{{this.message ? this.message.length : 0}}</code> of <code>160</code> characters</small>
         </div>
       </div>
@@ -95,7 +92,6 @@
           </div>
           <div class="divider"></div>
           <div class="right-side">
-            <button type="button" class="btn btn-success" (click)="updateItem()" *ngIf="editMode">Update</button>
             <button type="button" class="btn btn-success" (click)="addItem()" *ngIf="!editMode">Save</button>
           </div>
       </div>

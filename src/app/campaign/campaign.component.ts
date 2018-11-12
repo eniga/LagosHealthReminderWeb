@@ -86,15 +86,33 @@ export class CampaignComponent implements OnInit {
   }
 
   addItem(){
-
+    let item = new CampaignModel();
+    item.lgaId = this.lgaId;
+    item.insertUserId = +localStorage.getItem('userId');
+    item.message = this.message;
+    this.service.newMessage(item).subscribe((data: ResponseModel) => {
+      swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+      this.getAllMessages();
+    });
+    this.closeModal('Saved');
   }
 
   openAddModal(content){
     this.message = '';
     this.lga = '';
     this.lgaId = 0;
-    this.modalTitle = "Add New Ward";
+    this.modalTitle = "Send New Campaign Message";
     this.editMode = false;
+    this.openModal(content);
+  }
+
+  openEditModal(content, element){
+    this.campaignId = element.campaignId;
+    this.message = element.message;
+    this.lga = element.lga;
+    this.lgaId = element.lgaId;
+    this.editMode = true;
+    this.modalTitle = "View Campaign Message";
     this.openModal(content);
   }
 
