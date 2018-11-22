@@ -29,28 +29,40 @@
                     <td mat-cell *matCellDef="let element"> {{ element.lastName }} </td>
                   </ng-container>
 
+                  <!-- Date of Birth-->
+                  <ng-container matColumnDef="dob">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.dob | date }} </td>
+                  </ng-container>  
+
                   <!-- Phone -->
                   <ng-container matColumnDef="phone">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone 1</th>
                       <td mat-cell *matCellDef="let element"> {{ element.phone }} </td>
                     </ng-container>
    
-                  <!-- Email -->
-                  <ng-container matColumnDef="email">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-                      <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+                  <!-- Alt Phone -->
+                  <ng-container matColumnDef="altPhone">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone 2</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.altPhone }} </td>
+                    </ng-container>
+
+                    <!-- Ward -->
+                  <ng-container matColumnDef="ward">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ward</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.ward }} </td>
                     </ng-container>
   
-                    <!-- Date of Birth-->
-                  <ng-container matColumnDef="dob">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
-                      <td mat-cell *matCellDef="let element"> {{ element.dob | date }} </td>
-                    </ng-container>
-  
-                    <!-- Settlement -->
+                  <!-- Settlement -->
                   <ng-container matColumnDef="settlement">
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Settlement</th>
                       <td mat-cell *matCellDef="let element"> {{ element.settlement }} </td>
+                    </ng-container>
+                    
+                    <!-- Date Created -->
+                  <ng-container matColumnDef="insertDate">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+                      <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
                     </ng-container>
     
                     <!-- Created By -->
@@ -58,27 +70,18 @@
                       <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
                       <td mat-cell *matCellDef="let element"> {{ element.insertUser }} </td>
                     </ng-container>
-    
-                    <!-- Date Created -->
-                  <ng-container matColumnDef="insertDate">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
-                      <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
-                    </ng-container>
-    
-                    <!-- Actions Column -->
+  
+                    <!-- PHC -->
+                    <ng-container matColumnDef="phc">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>PHC</th>
+                        <td mat-cell *matCellDef="let element"> {{ element.phc }} </td>
+                      </ng-container>
+
+                      <!-- Actions Column -->
                   <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef>Actions</th>
                       <td mat-cell *matCellDef="let element;">
                         <button type="button" class="btn btn-custom disabled">Appointments</button>
-                        <button type="button" rel="tooltip" title="Edit" class="btn btn-info btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="editItem(element)">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element, filterValue)">
-                          <i class="material-icons">close</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Assign QR Code" class="btn btn-primary btn-link btn-sm" *ngIf="element.qrCodeId > 0">
-                          <i class="material-icons">add</i> Assign QR Code
-                        </button>
                       </td>
                     </ng-container>
     

@@ -18,7 +18,7 @@ export class PatientsComponent implements OnInit {
   // Array of Patients
   patients: PatientsModel[] = [];
 
-  displayedColumns: string[] = ['firstName', 'middleName', 'lastName', 'phone', 'email', 'dob', 'settlement', 'insertDate', 'insertUser', 'actions'];
+  displayedColumns: string[] = ['firstName', 'middleName', 'lastName', 'phone', 'altPhone', 'dob', 'settlement', 'ward', 'insertDate', 'insertUser', 'phc', 'actions'];
   dataSource: MatTableDataSource<PatientsModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

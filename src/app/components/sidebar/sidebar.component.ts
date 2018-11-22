@@ -11,7 +11,7 @@ export const ROUTES: RouteInfo[] = [
   { path: '/dashboard', title: 'Dashboard',  icon: 'design_app', class: '', visible: true },
   { path: '/patients', title: 'Patient Records', icon: 'files_single-copy-04', class: '', visible: true },
   { path: '/medical-centres', title: 'Organization Management',  icon:'location_map-big', class: '', visible: true },
-  { path: '/medical-services', title: 'Medical Services',  icon:'design_bullet-list-67', class: '', visible: true },
+  { path: '/medical-services', title: 'Health Services',  icon:'design_bullet-list-67', class: '', visible: true },
   { path: '/qr-management', title: 'QR Management', icon: 'education_paper', class: '', visible: true},
   { path: '/user-management', title: 'User Management',  icon:'users_single-02', class: '', visible: true },
   { path: '/campaign', title: 'Campaign Management', icon:'ui-1_email-85', class: '', visible: true}

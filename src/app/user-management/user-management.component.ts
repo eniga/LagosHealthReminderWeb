@@ -8,6 +8,12 @@ import {NgbModal, ModalDismissReasons }from '@ng-bootstrap/ng-bootstrap';
 import { ResponseModel } from '../models/ResponseModel';
 import swal from 'sweetalert'; 
 import { UserRolesModel } from '../models/UserRolesModel';
+import { LgaModel } from '../models/LgaModel';
+import { WardsModel } from '../models/WardsModel';
+import { PHCModel } from '../models/PHCModel';
+import { LgasManagementService } from '../services/lgas-management.service';
+import { WardsManagementService } from '../services/wards-management.service';
+import { PhcService } from '../services/phc.service';
 
 @Component({
   selector: 'app-user-management',
@@ -45,7 +51,19 @@ export class UserManagementComponent implements OnInit {
   editMode = false;
   modalTitle: string;
 
-  constructor(private service: UserManagementService, private roleService: RolesService, private modalService: NgbModal) { }
+  lgas: LgaModel[] = [];
+  lgaId: number;
+  wards: WardsModel[] = [];
+  wardId: number;
+  phcs: PHCModel[] = [];
+  phcId: number;
+
+  isHealthStaff = false;
+  enableWard = false;
+  enablePhc = false;
+
+  constructor(private service: UserManagementService, private roleService: RolesService, private modalService: NgbModal, 
+    private lgaService: LgasManagementService, private wardService: WardsManagementService, private phcService: PhcService) { }
 
   ngOnInit() {
     this.getAllUsers();
@@ -165,11 +183,48 @@ export class UserManagementComponent implements OnInit {
     this.roleService.getAllRoles().subscribe((data: RolesModel[]) => {
       this.roles = data;
     })
+    if(+element.roleId === 4){
+      this.lgaId = element.lgaId;
+      this.wardId = element.wardId;
+      this.phcId = element.phcId;
+      this.filterRole(4);
+      this.filterLGA(element.lgaId);
+      this.filterWard(element.wardId);
+    }
     this.openModal(content);
   }
   
-  filterForeCasts(event) {
+  filterRole(event) {
     this.roleId = event;
+    this.isHealthStaff = +event === 4 ? true : false;
+    if(this.isHealthStaff){
+      this.lgaService.getAllLgas().subscribe((data: LgaModel[]) => {
+        this.lgas = data;
+      })
+    }
+  }
+
+  filterLGA(event){
+    if(event > 0){
+      this.wardService.getAllWards().subscribe((data: WardsModel[]) => {
+        this.wards = data.filter(i => i.lgaId === +event);
+      })
+    }
+  }
+
+  filterWard(event){
+    if(event > 0){
+      this.phcService.getAll().subscribe((data: PHCModel[]) => {
+        this.phcs = data.filter(i => i.wardId === +event);
+        if(this.phcs.length < 1){
+          swal('Error', 'No PHC has been maintained for this ward. Kindly contact the administrator', 'error');
+        }
+      })
+    }
+  }
+
+  filterPhc(event){
+    console.log(event);
   }
 
   saveUser(){
@@ -233,6 +288,16 @@ export class UserManagementComponent implements OnInit {
     let item = new UserRolesModel;
     item.roleId = this.roleId;
     item.userId = this.userId;
+    item.phcId = 0;
+    item.updateUserId = +localStorage.getItem('userId');
+    if(+this.roleId === 4){
+      if(this.phcId === undefined){
+        swal('Error', 'Kindly select a PHC for this Health Facility User', 'error');
+        return false;
+      } else {
+        item.phcId = this.phcId;
+      }
+    }
     if(this.userRoleId > 0){
       item.userRoleId = this.userRoleId
       this.service.updateRole(item).subscribe((data: ResponseModel) => {
@@ -245,7 +310,15 @@ export class UserManagementComponent implements OnInit {
         this.getAllUsers();
       })
     }
+    this.resetRoleDropdowns();
     this.modalService.dismissAll('Saved');
+  }
+
+  resetRoleDropdowns(){
+    this.isHealthStaff = false;
+    this.roleId = null;
+    this.wardId = null;
+    this.phcId = null;
   }
 
   openModal(content){

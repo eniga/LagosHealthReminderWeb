@@ -97,7 +97,7 @@
 </div>
 <ng-template #classic let-c="close" let-d="dismiss">
   <div class="modal-header">
-      <h5 class="modal-title text-center">Add New Role</h5>
+      <h5 class="modal-title text-center">Manage Role</h5>
       <button type="button" class="close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
       </button>
@@ -107,13 +107,40 @@
       <input class="form-control" [(ngModel)]="username" disabled="disabled">
     </div>
     <div class="form-group">
-      <select class="form-control" (change)="filterForeCasts($event.target.value)">
+      <select class="form-control" (change)="filterRole($event.target.value)">
           <option>--Select Role--</option>
           <option *ngFor="let role of roles" value={{role.roleId}} selected="{{ role.roleId === roleId ? 'selected' : ''}}">
               {{role.roleName}}
           </option>
       </select>
     </div>
+    <div class="form-group" *ngIf="isHealthStaff">
+      <label>Local Government Area</label>
+      <select class="form-control" (change)="filterLGA($event.target.value)" [(ngModel)]="lgaId">
+        <option>--Select LGA--</option>
+        <option *ngFor="let item of lgas" value='{{item.lgaId}}'>
+            {{item.lga}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="isHealthStaff && wards.length > 0">
+        <label>Ward</label>
+        <select class="form-control" (change)="filterWard($event.target.value)" [(ngModel)]="wardId">
+            <option>--Select Ward--</option>
+            <option *ngFor="let ward of wards" value={{ward.wardId}}>
+                {{ward.ward}}
+            </option>
+        </select>
+      </div>
+    <div class="form-group" *ngIf="isHealthStaff && phcs.length > 0">
+        <label>PHC</label>
+        <select class="form-control" [(ngModel)]="phcId">
+          <option>--Select PHC--</option>
+          <option *ngFor="let phc of phcs" value={{phc.phcId}}>
+            {{ phc.phc}}
+          </option>
+        </select>
+      </div>
   </div>
   <div class="modal-footer">
       <div class="left-side">

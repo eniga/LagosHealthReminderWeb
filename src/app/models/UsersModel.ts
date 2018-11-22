@@ -18,6 +18,14 @@ export class UsersModel {
     roleId: number;
     roleName: string;
     isActive: number;
+    phcId: number;
+    phc: string;
+    wardId: number;
+    ward: string;
+    lgaId: number;
+    lga: string;
+    stateId: number;
+    state: string;
 }
 
 export class LoginUserModel {
