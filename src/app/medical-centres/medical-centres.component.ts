@@ -48,7 +48,11 @@ export class MedicalCentresComponent implements OnInit {
 
   getAllWards(){
     this.wardService.getAllWards().subscribe((data: WardsModel[]) => {
-      this.wards = data;
+      this.wards = data.sort((a,b) => {
+        if(a.ward < b.ward) { return -1;}
+        if(a.ward > b.ward) { return 1; }
+        return 0;
+      });
     })
   }
 

@@ -49,7 +49,11 @@ export class WardsManagementComponent implements OnInit {
 
   loadLga(){
     this.lgaService.getAllLgas().subscribe((data: LgaModel[]) => {
-      this.lgas = data;
+      this.lgas = data.sort((a,b) => {
+        if(a.lga < b.lga) { return -1;}
+        if(a.lga > b.lga) { return 1; }
+        return 0;
+      });
     })
   }
 

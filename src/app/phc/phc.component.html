@@ -4,13 +4,11 @@
         <div class="card">
           <div class="card-header">
             <h5 class="card-title">PHC Management</h5>
-            <button type="button" class="btn btn-success" (click)="openAddModal(newphc)">Add New</button>
-            <button type="button" class="btn btn-info" [routerLink]="['/medical-centres']">
-              <i class="now-ui-icons arrows-1_minimal-left"></i> Back to Settlements
-            </button>
+            <button mat-raised-button type="button" class="btn btn-custom" [routerLink]="['/medical-centres']">Manage Settlements</button>
             <button type="button" class="btn btn-custom" [routerLink]="['/wards']">Manage Wards</button>
             <button type="button" class="btn btn-custom" [routerLink]="['/lgas']">Manage LGAs</button>
-            <button type="button" class="btn btn-custom disabled">Manage States</button>
+            <button type="button" class="btn btn-custom disabled">Manage PHCs</button>
+            <button type="button" class="btn btn-success" (click)="openAddModal(newphc)">Add New</button>
             <mat-form-field class="col-sm-3 pull-right">
                 <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
               </mat-form-field>
