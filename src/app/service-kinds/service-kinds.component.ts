@@ -3,7 +3,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ResponseModel } from '../models/ResponseModel';
 import swal from 'sweetalert'; 
-import { ServiceTypesModel, ServiceKindsModel } from '../models/ServicesModel';
+import { ServiceTypesModel, ServiceKindsModel, TypesModel } from '../models/ServicesModel';
 import { MedicalServicesService } from '../services/medical-services.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -14,14 +14,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ServiceKindsComponent implements OnInit {
   // Array of Medical Centres
-  displayedColumns: string[] = ['serviceKindName','serviceType', 'insertDate', 'insertUser', 'actions'];
+  displayedColumns: string[] = ['serviceKindName','serviceType', 'insertDate', 'insertUser', 'type', 'duration', 'actions'];
   dataSource: MatTableDataSource<ServiceKindsModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  types: ServiceTypesModel[] = [];
-  kinds: ServiceKindsModel[] = [];
+  serviceTypes: ServiceTypesModel[] = [];
+  serviceKinds: ServiceKindsModel[] = [];
+  types: TypesModel[] = [];
   filterValue: string;
   total: number;
   isLoading = true;
@@ -35,6 +36,9 @@ export class ServiceKindsComponent implements OnInit {
   insertUser: string;
   updateUserId: number;
   updateUser: string;
+  typeId: number;
+  type: string;
+  duration: number;
 
   // For Modal
   closeResult: string;
@@ -47,13 +51,21 @@ export class ServiceKindsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllKinds();
-    this.getType();
+    this.getServiceType();
+    this.getTypes();
   }
 
-  getType(){
+  getTypes(){
+    this.service.getTypes().subscribe((data: TypesModel[]) => {
+      if(data.length > 0){
+        this.types = data;
+      }
+    })
+  }
+
+  getServiceType(){
     this.service.getAllTypes().subscribe((data: ServiceTypesModel[]) => {
       if(data.length > 0){
-        console.log(data);
         let typeData = data.filter(x => +x.serviceTypeId === +this.serviceTypeId);
         if(typeData.length > 0)
         {
@@ -65,8 +77,8 @@ export class ServiceKindsComponent implements OnInit {
 
   getAllKinds(){
     this.service.getAllKinds(this.serviceTypeId).subscribe((data: ServiceKindsModel[]) => {
-      this.kinds = data;
-      this.dataSource = new MatTableDataSource(this.kinds);
+      this.serviceKinds = data;
+      this.dataSource = new MatTableDataSource(this.serviceKinds);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.updateTotal();
@@ -133,6 +145,9 @@ export class ServiceKindsComponent implements OnInit {
       let item = new ServiceKindsModel;
       item.serviceKindName = this.serviceKindName;
       item.serviceTypeId = this.serviceTypeId;
+      item.typeId = this.typeId;
+      item.type = this.type;
+      item.duration = this.duration;
       item.insertUserId = +localStorage.getItem('userId');
       this.service.newKind(item).subscribe((data: ResponseModel) => {
         swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
@@ -146,6 +161,9 @@ export class ServiceKindsComponent implements OnInit {
       item.serviceKindId = this.serviceKindId;
       item.serviceKindName = this.serviceKindName;
       item.serviceTypeId = this.serviceTypeId;
+      item.typeId = this.typeId;
+      item.type = this.type;
+      item.duration = this.duration;
       item.updateUserId = +localStorage.getItem('userId');
       this.service.updateKind(item).subscribe((data: ResponseModel) => {
         swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
@@ -157,6 +175,9 @@ export class ServiceKindsComponent implements OnInit {
     openAddModal(content){
       this.serviceKindId = 0;
       this.serviceKindName = '';
+      this.typeId = 0;
+      this.type = '';
+      this.duration = 0;
       this.modalTitle = "Add New Service Type";
       this.editMode = false;
       this.openModal(content);
@@ -165,6 +186,9 @@ export class ServiceKindsComponent implements OnInit {
     openEditModal(content, element){
       this.serviceKindId = element.serviceKindId;
       this.serviceKindName = element.serviceKindName;
+      this.typeId = element.typeId;
+      this.type = element.type;
+      this.duration = element.duration;
       this.modalTitle = "Edit Service Type";
       this.editMode = true;
       this.openModal(content);
@@ -193,6 +217,7 @@ export class ServiceKindsComponent implements OnInit {
     }
   
     filterForeCasts(event) {
+      this.typeId = event;
     }
   
 

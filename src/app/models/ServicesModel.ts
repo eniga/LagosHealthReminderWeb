@@ -13,6 +13,9 @@ export class ServiceKindsModel {
     updateDate: Date;
     updateUserId: number;
     updateUser: string;
+    typeId: number;
+    type: string;
+    duration: number;
 }
 
 export class ServiceTypesModel {
@@ -25,4 +28,9 @@ export class ServiceTypesModel {
     updateUser: string;
     updateDate: Date;
     smsMessage: string;
+}
+
+export class TypesModel {
+    typeId: number;
+    type: string;
 }

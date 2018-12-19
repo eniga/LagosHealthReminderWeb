@@ -26,17 +26,29 @@
                   <td mat-cell *matCellDef="let element"> {{ element.serviceType }} </td>
                 </ng-container>
 
-                  <!-- Created By -->
+                <!-- Created By -->
                 <ng-container matColumnDef="insertUser">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
-                    <td mat-cell *matCellDef="let element"> {{ element.insertUser }} </td>
-                  </ng-container>
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+                  <td mat-cell *matCellDef="let element"> {{ element.insertUser }} </td>
+                </ng-container>
   
-                  <!-- State -->
+                <!-- Date Created -->
                 <ng-container matColumnDef="insertDate">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
-                    <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
-                  </ng-container>
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+                  <td mat-cell *matCellDef="let element"> {{ element.insertDate | date: 'MMM d, y, h:mm:ss a' }} </td>
+                </ng-container>
+
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                  <td mat-cell *matCellDef="let element"> {{ element.type }} </td>
+                </ng-container>
+
+                <!-- Duration -->
+                <ng-container matColumnDef="duration">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration</th>
+                  <td mat-cell *matCellDef="let element"> {{ element.duration }} </td>
+                </ng-container>
   
                   <!-- Actions Column -->
                 <ng-container matColumnDef="actions">
@@ -54,7 +66,7 @@
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
-              <div *ngIf="kinds.length === 0 && !isLoading" class="text-center">No data</div>
+              <div *ngIf="serviceKinds.length === 0 && !isLoading" class="text-center">No data</div>
               <div *ngIf="isLoading" class="text-center">Loading....</div>
               <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>  
         </div>
@@ -78,7 +90,20 @@
       <div class="form-group">
         <label>Service Type</label>
         <input class="form-control" [(ngModel)]="serviceType" disabled="disabled">
-    </div>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select class="form-control" (change)="filterForeCasts($event.target.value)" [(ngModel)]="typeId">
+          <option value='0'>--Select Type--</option>
+          <option *ngFor="let item of types" value='{{item.typeId}}'>
+              {{item.type}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Duration</label>
+        <input class="form-control" [(ngModel)]="duration">
+      </div>
     </div>
     <div class="modal-footer">
         <div class="left-side">

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { appsettings } from '../appsettings';
-import { ServiceKindsModel, ServiceTypesModel } from '../models/ServicesModel';
+import { ServiceKindsModel, ServiceTypesModel, TypesModel } from '../models/ServicesModel';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +44,9 @@ export class MedicalServicesService {
 
   updateTypeSMSMessage(serviceType: ServiceTypesModel){
     return this.http.put(appsettings.api_url + 'ServiceTypes/smsmessage', serviceType);
+  }
+
+  getTypes(){
+    return this.http.get<TypesModel[]>(appsettings.api_url + 'ServiceKinds/types')
   }
 }
