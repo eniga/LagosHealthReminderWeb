@@ -4,12 +4,16 @@
         <div class="card">
           <div class="card-header">
             <h5 class="card-title">Patients</h5>
+            <button mat-raised-button type="button" class="btn btn-custom" (click)="exportTable()">
+              Export as Excel <i class="fa fa-file-excel"></i>
+            </button>
+            <!-- <button mat-raised-button type="button" class="btn btn-custom">Export</button> -->
             <mat-form-field class="col-sm-3 pull-right">
               <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
             </mat-form-field>
           </div>
-          <div class="card-body">
-              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-hover" matSort>
+          <div class="card-body" #TABLE>
+              <table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 table table-hover" matSort>
 
                 <!-- First Name -->
                 <ng-container matColumnDef="firstName">

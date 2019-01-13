@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PatientsModel } from '../models/PatientsModel';
 import { PatientsService } from '../services/patients.service';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
@@ -7,6 +7,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import swal from 'sweetalert'; 
 import { ResponseModel } from '../models/ResponseModel';
 import { MedicalCentresService } from '../services/medical-centres.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-patients',
@@ -23,6 +24,7 @@ export class PatientsComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('TABLE') table: ElementRef;
 
   filterValue: string;
   total: number;
@@ -113,7 +115,13 @@ export class PatientsComponent implements OnInit {
 
   // Method to export to Excel
   exportTable(){
+    //const ws: XLSX.WorkSheet=XLSX.utils.table_to_sheet(this.table.nativeElement);
+    const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(this.patients);//converts a DOM TABLE element to a worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
+    /* save to file */
+    XLSX.writeFile(wb, 'Patients.xlsx');
   }
 
   addItem(){

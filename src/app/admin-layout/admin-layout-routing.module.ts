@@ -22,7 +22,8 @@ const routes: Routes = [
       { path: 'kinds/:id', loadChildren: '../service-kinds/service-kinds.module#ServiceKindsModule'},
       { path: 'unprinted', loadChildren: '../unprinted/unprinted.module#UnprintedModule'},
       { path: 'phc', loadChildren: '../phc/phc.module#PhcModule'},
-      { path: 'campaign', loadChildren: '../campaign/campaign.module#CampaignModule'}
+      { path: 'campaign', loadChildren: '../campaign/campaign.module#CampaignModule'},
+      { path: 'settings', loadChildren: '../settings/settings.module#SettingsModule'}
     ]
   }
 ]
