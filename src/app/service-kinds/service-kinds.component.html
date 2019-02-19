@@ -46,7 +46,7 @@
 
                 <!-- Duration -->
                 <ng-container matColumnDef="duration">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration</th>
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Interval for the next</th>
                   <td mat-cell *matCellDef="let element"> {{ element.duration }} </td>
                 </ng-container>
   
@@ -101,7 +101,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Duration</label>
+        <label>Interval for the next</label>
         <input class="form-control" [(ngModel)]="duration">
       </div>
     </div>
