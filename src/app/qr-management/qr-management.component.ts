@@ -4,7 +4,7 @@ import {NgbModal, ModalDismissReasons }from '@ng-bootstrap/ng-bootstrap';
 import { ResponseModel } from '../models/ResponseModel';
 import swal from 'sweetalert'; 
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { QrCodeModel, QrCodeStatus, QrCodeRequestModel } from '../models/QrCodeModel';
+import { QrCodeModel, QrCodeStatus, QrCodeRequestModel, QrCodeStats } from '../models/QrCodeModel';
 import { PatientsService } from '../services/patients.service';
 import { QrManagementService } from '../services/qr-management.service';
 import { Router } from '@angular/router';
@@ -48,12 +48,30 @@ export class QrManagementComponent implements OnInit {
     numberOfPages: number;
     pageSize: number = 150;
     maxPage: number = 10;
+
+    ogenerated = 0;
+    oprinted = 0;
+    ounprinted = 0;
+    omapped = 0;
+    ounmapped = 0;
   
 
   constructor(private modalService: NgbModal, private service: PatientsService, private qrService: QrManagementService, private router: Router) { }
 
   ngOnInit() {
-    this.getAllCodes();
+    this.getStats();
+  }
+
+  getStats(){
+    this.isLoading = true;
+    this.qrService.getStats().subscribe((data: QrCodeStats) => {
+      this.ogenerated = data.generated;
+      this.oprinted = data.printed;
+      this.ounprinted = data.unprinted;
+      this.omapped = data.mapped;
+      this.ounmapped = data.unmapped;
+      this.isLoading = false;
+    })
   }
 
   getAllCodes(){

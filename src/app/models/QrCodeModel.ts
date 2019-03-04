@@ -27,3 +27,11 @@ export class QrCodeRequestModel {
     numberOfCodes: number;
     insertUserId: number;
 }
+
+export class QrCodeStats {
+    generated: number;
+    printed: number;
+    unprinted: number;
+    mapped: number;
+    unmapped: number;
+}
