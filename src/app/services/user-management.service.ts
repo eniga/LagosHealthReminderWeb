@@ -37,7 +37,7 @@ export class UserManagementService {
   }
 
   login(loginUser: LoginUserModel) {
-    return this.http.post(appsettings.api_url + 'users/login', loginUser);
+    return this.http.post(appsettings.api_url + 'users/login2', loginUser);
   }
 
   removeUser(userId: number){

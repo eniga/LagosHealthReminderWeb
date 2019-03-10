@@ -6,9 +6,6 @@
           <h5 class="title">Qr Code Management</h5>
           <button type="button" class="btn btn-success" (click)="openGenerate(classic)">Generate New</button>
           <button type="button" class="btn btn-custom" [routerLink]="['/unprinted']" [disabled]="ounprinted < 1">Unprinted ({{ ounprinted / pageSize }} {{ ounprinted / pageSize < 2 ? 'Page' : 'Pages'}})</button>
-          <mat-form-field class="col-sm-3 pull-right">
-              <input matInput class="form-control" placeholder="Filter..." [(ngModel)]="filterValue">
-            </mat-form-field>
         </div>
         <div class="card-body">
           <table class="mat-elevation-z8 table table-hover">
