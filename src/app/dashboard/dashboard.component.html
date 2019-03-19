@@ -1,66 +1,126 @@
-<div class="row">
-  <div class="col-lg-3 col-md-6 col-sm-6">
+<div class="header text-center">
+  <h4 class="small">Page was updated on {{ pageUpdate | date: 'dd MMM yyyy hh:mm:ss' }}</h4>
+</div> 
+<div class="row"> 
+  <div class="col-lg-2 col-md-6 col-sm-6">
     <div class="card card-stats">
       <div class="card-header card-header-warning card-header-icon">
         <div class="card-icon">
-          <i class="material-icons">content_copy</i>
+            <h3 class="card-title">{{defaulters | number: '1.0-0'}}</h3>
         </div>
         <p class="card-category">Defaulted Appointments</p>
-        <h3 class="card-title">{{defaulters}}</h3>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons text-danger">warning</i>
-          <a href="#pablo">View Details</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-success card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">store</i>
-        </div>
-        <p class="card-category">Daily Appointments</p>
-        <h3 class="card-title">{{todayAppointments}}</h3>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">date_range</i> Last 24 Hours
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-danger card-header-icon">
-        <div class="card-icon">
-          <i class="material-icons">info_outline</i>
-        </div>
-        <p class="card-category">Total Patients</p>
-        <h3 class="card-title">{{patients}}</h3>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-            <i class="material-icons">update</i> Just Updated
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-info card-header-icon">
-        <div class="card-icon">
-            <i class="now-ui-icons business_bank"></i>
-        </div>
-        <p class="card-category">Total Settlements</p>
-        <h3 class="card-title">{{settlements}}</h3>
       </div>
       <div class="card-footer">
         <div class="stats">
           <i class="material-icons">update</i> Just Updated
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+          <h3 class="card-title">{{todayAppointments | number: '1.0-0'}}</h3>
+        </div>
+        <p class="card-category">Daily Appointments</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-danger card-header-icon">
+        <div class="card-icon">
+          <h3 class="card-title">{{patients | number: '1.0-0'}}</h3>
+        </div>
+        <p class="card-category">Total Clients</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <h3 class="card-title">{{settlements | number: '1.0-0'}}</h3>
+        </div>
+        <p class="card-category">Total Settlements</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+          <h3 class="card-title">{{wards | number: '1.0-0'}}</h3>
+        </div>
+        <p class="card-category">Wards</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+          <h3 class="card-title">{{lgas | number: '1.0-0'}}</h3>
+        </div>
+        <p class="card-category">LGAs</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-title">Clients Registered ({{ yearId }})</div>
+      </div>
+      <div class="card-body">
+        <canvas #clientChart>{{ clientChart }}</canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-title">Appointments ({{ yearId }})</div>
+      </div>
+      <div class="card-body">
+        <canvas #appointmentChart>{{ appointmentChart }}</canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-title">Defaulters ({{ yearId }})</div>
+      </div>
+      <div class="card-body">
+        <canvas #defaulterChart>{{ defaulterChart }}</canvas>
       </div>
     </div>
   </div>
@@ -75,7 +135,7 @@
         <table class="table">
           <tr>
             <th>SMS Sent</th>
-            <td>{{ SMSSent }}</td>
+            <td>{{ SMSSent | number: '1.0-0' }}</td>
           </tr>
           <tr>
             <th>SMS Balance</th>
@@ -97,8 +157,23 @@
       </div>
     </div>
   </div>
-  <div class="col-md-4">
+  
+  <div class="col-md-2">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+          <h3 class="card-title">{{phcs | number: '1.0-0'}}</h3>
+        </div>
+        <p class="card-category">PHCs</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-6">
+    
   </div>
 </div>

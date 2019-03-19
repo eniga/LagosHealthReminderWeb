@@ -23,7 +23,9 @@ const routes: Routes = [
       { path: 'unprinted', loadChildren: '../unprinted/unprinted.module#UnprintedModule'},
       { path: 'phc', loadChildren: '../phc/phc.module#PhcModule'},
       { path: 'campaign', loadChildren: '../campaign/campaign.module#CampaignModule'},
-      { path: 'settings', loadChildren: '../settings/settings.module#SettingsModule'}
+      { path: 'settings', loadChildren: '../settings/settings.module#SettingsModule'},
+      { path: 'states', loadChildren: '../states/states.module#StatesModule'},
+      { path: 'reports', loadChildren: '../reports/reports.module#ReportsModule'}
     ]
   }
 ]

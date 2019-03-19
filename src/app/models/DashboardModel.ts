@@ -21,3 +21,9 @@ export class SMSDashboardModel {
     url: string;
     appName: string;
 }
+
+export class PatientBreakdownModel {
+    monthId: number;
+    monthName: string;
+    totalCount: number;
+}

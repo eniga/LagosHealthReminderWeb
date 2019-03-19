@@ -46,8 +46,11 @@
                   <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef>Actions</th>
                       <td mat-cell *matCellDef="let element;">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-custom" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newcampaign,element)">
-                          View
+                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-infod btn-link btn-sm" data-toggle="modal" data-target="#ServiceTypeModal" (click)="openEditModal(newcampaign,element)">
+                          <i class="material-icons">edit</i>
+                        </button>
+                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" (click)="removeItem(element)">
+                          <i class="material-icons">close</i>
                         </button>
                       </td>
                     </ng-container>
@@ -73,8 +76,9 @@
       <div class="modal-body">
         <div class="form-group">
             <label>Local Government Area</label>
-            <select class="form-control" (change)="filterForeCasts($event.target.value)" [(ngModel)]="lgaId" [disabled]="editMode">
+            <select class="form-control" (change)="filterForeCasts($event.target.value)" [(ngModel)]="lgaId">
               <option value='0'>--Select LGA--</option>
+              <option value='9999'>All</option>
               <option *ngFor="let item of lgas" value='{{item.lgaId}}'>
                   {{item.lga}}
               </option>
@@ -82,7 +86,7 @@
         </div>
         <div class="form-group">
           <label>SMS Message <i>(Starting with ...Dear [firstname])</i></label>
-          <textarea class="form-control" matInput [(ngModel)]="message" maxlength="160" [disabled]="editMode" matTextareaAutosize matAutosizeMinRows=4 matAutosizeMaxRows=5></textarea>
+          <textarea class="form-control" matInput [(ngModel)]="message" maxlength="160" matTextareaAutosize matAutosizeMinRows=4 matAutosizeMaxRows=5></textarea>
           <small class="form-text text-muted"><code>{{this.message ? this.message.length : 0}}</code> of <code>160</code> characters</small>
         </div>
       </div>
@@ -92,6 +96,7 @@
           </div>
           <div class="divider"></div>
           <div class="right-side">
+            <button type="button" class="btn btn-success" (click)="updateItem()" *ngIf="editMode">Update</button>
             <button type="button" class="btn btn-success" (click)="addItem()" *ngIf="!editMode">Save</button>
           </div>
       </div>

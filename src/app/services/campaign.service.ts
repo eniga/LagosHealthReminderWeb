@@ -17,4 +17,8 @@ export class CampaignService {
   newMessage(campaign: CampaignModel){
     return this.http.post(appsettings.api_url + 'messages/campaign', campaign);
   }
+
+  deleteMessage(campaignId: number){
+    return this.http.delete(appsettings.api_url + 'messages/campaign' + campaignId);
+  }
 }

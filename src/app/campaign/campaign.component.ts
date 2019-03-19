@@ -8,6 +8,7 @@ import { ResponseModel } from '../models/ResponseModel';
 import swal from 'sweetalert'; 
 import { CampaignModel } from '../models/CampaignModel';
 
+
 @Component({
   selector: 'app-campaign',
   templateUrl: './campaign.component.html',
@@ -95,6 +96,28 @@ export class CampaignComponent implements OnInit {
       this.getAllMessages();
     });
     this.closeModal('Saved');
+  }
+
+  // Method to remove an element from the array
+  removeItem(element){
+    swal({
+      title: 'Are you sure?',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: {
+        cancel: true,
+        confirm: {
+          text: 'Delete'
+        }
+      }
+    }).then((value) => {
+      if(value){
+        this.service.deleteMessage(element.campaignId).subscribe((data: ResponseModel) => {
+          swal(data.status? 'Success' : 'Error', data.statusMessage, data.status? 'success' : 'error');
+          this.getAllMessages();
+        })
+      }
+    });
   }
 
   openAddModal(content){

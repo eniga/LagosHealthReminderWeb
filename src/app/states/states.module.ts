@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DashboardRoutingModule } from './dashboard-routing.module';
-import { DashboardComponent } from './dashboard.component';
+import { StatesRoutingModule } from './states-routing.module';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule, MatSortModule, MatTableModule, MatPaginatorModule, MatProgressSpinnerModule, MatTooltipModule, MatCardModule } from '@angular/material';
-import { ChartsModule } from 'ng2-charts';
+import { StatesComponent } from './states.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    DashboardRoutingModule,
+    StatesRoutingModule,
     FormsModule,
     MatInputModule,
     MatSortModule,
@@ -18,11 +17,8 @@ import { ChartsModule } from 'ng2-charts';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    MatCardModule,
-    ChartsModule
+    MatCardModule
   ],
-  declarations: [
-    DashboardComponent
-  ]
+  declarations: [StatesComponent]
 })
-export class DashboardModule { }
+export class StatesModule { }

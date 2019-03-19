@@ -5,6 +5,8 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ResponseModel } from '../models/ResponseModel';
 import swal from 'sweetalert';
+import { StatesModel } from '../models/StatesModel';
+import { StatesService } from '../services/states.service';
 
 @Component({
   selector: 'app-lgas-management',
@@ -22,6 +24,7 @@ export class LgasManagementComponent implements OnInit {
   filterValue: string;
   total: number;
   isLoading = true;
+  states: StatesModel[] = [];
 
   // Values for modal
   lgaId: number;
@@ -36,10 +39,17 @@ export class LgasManagementComponent implements OnInit {
   editMode = false;
   modalTitle: string;
 
-  constructor(private service: LgasManagementService, private modalService: NgbModal) { }
+  constructor(private service: LgasManagementService, private stateService: StatesService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getAll();
+    this.getStates();
+  }
+
+  getStates(){
+    this.stateService.getAll().subscribe((data: StatesModel[]) => {
+      this.states = data;
+    })
   }
 
   getAll(){
@@ -129,8 +139,8 @@ export class LgasManagementComponent implements OnInit {
 
   openAddModal(content){
     this.lga = '';
-    this.stateId = 1;
-    this.state = 'Lagos';
+    this.stateId = 0;
+    this.state = '';
     this.modalTitle = 'Add New LGA';
     this.editMode = false;
     this.openModal(content);
@@ -140,6 +150,7 @@ export class LgasManagementComponent implements OnInit {
     this.lgaId = element.lgaId;
     this.lga = element.lga;
     this.stateId = element.stateId;
+    this.state = element.state;
     this.modalTitle = 'Edit LGA';
     this.editMode = true;
     this.openModal(content);
