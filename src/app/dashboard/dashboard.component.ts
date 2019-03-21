@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   @ViewChild('clientChart') private clientchartRef;
   @ViewChild('appointmentChart') private appointmentchartRef;
   @ViewChild('defaulterChart') private defaulterchartRef;
+  @ViewChild('returneeChart') private returneechartRef;
+  @ViewChild('onScheduleChart') private onschedulechartRef;
 
   title = "Dashboard";
   SMSSent = 0;
@@ -35,51 +37,32 @@ export class DashboardComponent implements OnInit {
   lgas = 0;
   phcs = 0;
   pageUpdate = new Date;
-  patientBreakdown: PatientBreakdownModel[] = [];
-  clientChart: any;
-  appointmentChart: any;
-  defaulterChart: any;
   yearId = moment().year();
-    
-
-  // public barChartOptions = {
-  //   scaleShowVerticalLines: false,
-  //   responsive: true
-  // };
-
-  // public barChartLabels = this.patientBreakdown.map(x => x.monthName);
-  // public barChartType = 'bar';
-  // public barChartLegend = true;
-  // public barChartData = [
-  //   {data: this.patientBreakdown.map(x => x.totalCount), label: 'Patients'}
-  // ];
+  randomization = 0;
+  clientDash: DashboardModel = { currentMonth: 0, lastMonth: 0};
+  appointmentDash: DashboardModel = { currentMonth: 0, lastMonth: 0};
+  onScheduleDash: DashboardModel = { currentMonth: 0, lastMonth: 0};
+  defaultersDash: DashboardModel = { currentMonth: 0, lastMonth: 0};
+  defaultersReturnedDash: DashboardModel = { currentMonth: 0, lastMonth: 0};
+  activePhcDash: DashboardModel = { currentMonth: 0, lastMonth: 0};
+  activeServicesDash: string[] = [];
 
   constructor(private service: DashboardService) { }
 
   ngOnInit() {
-    this.GetAppointments();
-    this.GetSMSSummary();
-    this.GetTodayAppointments();
-    this.GetDefaulters();
+    this.GetDefaulters()
     this.GetPatients();
-    this.GetSettlements();
-    this.GetWards();
-    this.GetLGAs();
-    this.GetPHCs();
-    this.GetPatientBreakdown();
-    this.GetAppointmentBreakdown();
-    this.GetDefaulterBreakdown();
+    this.GetSMSSummary();
+    this.GetRandomization();
+    this.GetClientDashboard();
+    this.GetAppointmentsDashboard();
+    this.GetClientsOnScheduledDashboard();
+    this.GetDefaultersDashboard();
+    this.GetDefaultersReturnedDashboard();
+    this.GetActivePHCsDashboard();
+    this.GetActiveServices()
   }
 
-  getAll(){
-    this.service.GetDashboardSummary().subscribe((data: DashboardModel) => {
-      this.patients = data.patients;
-      this.settlements = data.settlements;
-      this.appointments = data.appointments;
-      this.defaulters = data.defaulters;
-      this.todayAppointments = data.todayAppointments;
-    });
-  }
 
   GetSMSSummary(){
     this.service.GetSMSSummary().subscribe((data: SMSDashboardModel) => {
@@ -148,99 +131,59 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  GetPatientBreakdown(){
-    this.service.GetPatientBreakdowns(this.yearId).subscribe((data: PatientBreakdownModel[]) => {
-      this.clientChart = new Chart(this.clientchartRef.nativeElement, {
-        type: 'bar',
-        data: {
-          labels: data.map(x => x.monthName), // your labels array
-          datasets: [
-            {
-              data: data.map(x => x.totalCount), // your data array
-              borderColor: '#00AEFF',
-              fill: true,
-              backgroundColor: '#17a2b8'
-            }
-          ]
-        },
-        options: {
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: true
-            }],
-            yAxes: [{
-              display: true
-            }],
-          }
-        }
-      });
+  GetRandomization(){
+    this.service.GetRandomization().subscribe((data: number) => {
+      this.randomization = data;
+      this.pageUpdate = new Date;
+    });
+  }
+
+  GetClientDashboard(){
+    this.service.GetClientDashboard().subscribe((data: DashboardModel) => {
+      this.clientDash = data;
+      this.pageUpdate = new Date;
     })
   }
 
-  GetAppointmentBreakdown(){
-    this.service.GetAppointmentBreakdown(this.yearId).subscribe((data: PatientBreakdownModel[]) => {
-      this.appointmentChart = new Chart(this.appointmentchartRef.nativeElement, {
-        type: 'bar',
-        data: {
-          labels: data.map(x => x.monthName), // your labels array
-          datasets: [
-            {
-              data: data.map(x => x.totalCount), // your data array
-              borderColor: '#00AEFF',
-              fill: true,
-              backgroundColor: '#fedbe5'
-            }
-          ]
-        },
-        options: {
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: true
-            }],
-            yAxes: [{
-              display: true
-            }],
-          }
-        }
-      });
+  GetAppointmentsDashboard(){
+    this.service.GetAppointmentsDashboard().subscribe((data: DashboardModel) => {
+      this.appointmentDash = data;
+      this.pageUpdate = new Date;
     })
   }
 
-  GetDefaulterBreakdown(){
-    this.service.GetDefaulterBreakdown(this.yearId).subscribe((data: PatientBreakdownModel[]) => {
-      this.defaulterChart = new Chart(this.defaulterchartRef.nativeElement, {
-        type: 'bar',
-        data: {
-          labels: data.map(x => x.monthName), // your labels array
-          datasets: [
-            {
-              data: data.map(x => x.totalCount), // your data array
-              borderColor: '#00AEFF',
-              fill: true,
-              backgroundColor: '#dadeff'
-            }
-          ]
-        },
-        options: {
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: true
-            }],
-            yAxes: [{
-              display: true
-            }],
-          }
-        }
-      });
+  GetClientsOnScheduledDashboard(){
+    this.service.GetAppointmentsDashboard().subscribe((data: DashboardModel) => {
+      this.onScheduleDash = data;
+      this.pageUpdate = new Date;
+    })
+  }
+
+  GetDefaultersDashboard(){
+    this.service.GetDefaultersDashboard().subscribe((data: DashboardModel) => {
+      this.defaultersDash = data;
+      this.pageUpdate = new Date;
+    })
+  }
+
+  GetDefaultersReturnedDashboard(){
+    this.service.GetDefaultersReturnedDashboard().subscribe((data: DashboardModel) => {
+      this.defaultersReturnedDash = data;
+      this.pageUpdate = new Date;
+    })
+  }
+
+  GetActivePHCsDashboard(){
+    this.service.GetActivePHCsDashboard().subscribe((data: DashboardModel) => {
+      this.activePhcDash = data;
+      this.pageUpdate = new Date;
+    })
+  }
+
+  GetActiveServices(){
+    this.service.GetActiveServices().subscribe((data: string[]) => {
+      this.activeServicesDash = data;
+      this.pageUpdate = new Date;
     })
   }
 }

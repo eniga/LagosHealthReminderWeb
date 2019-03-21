@@ -11,55 +11,72 @@ export class DashboardService {
 
   constructor(private http: HttpClient) { }
 
-  GetDashboardSummary(){
-    return this.http.get<DashboardModel>(appsettings.api_url + 'Dashboard');
-  }
 
   GetSMSSummary(){
     return this.http.get<SMSDashboardModel>(appsettings.api_url + 'Dashboard/sms');
   }
 
   GetAppointments(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/appointments');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/appointments/total');
   }
 
   GetTodayAppointments(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/appointments/today');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/appointments/today/total');
   }
 
   GetDefaulters(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/defaulters');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/defaulters/total');
   }
 
   GetPatients(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/patients');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/patients/total');
   }
 
   GetSettlements(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/settlements');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/settlements/total');
   }
 
   GetWards(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/wards');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/wards/total');
   }
 
   GetLGAs(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/lgas');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/lgas/total');
   }
 
   GetPHCs(){
-    return this.http.get<number>(appsettings.api_url + 'Dashboard/phcs');
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/phcs/total');
   }
 
-  GetPatientBreakdowns(yearId: number){
-    return this.http.get<PatientBreakdownModel[]>(appsettings.api_url + 'Dashboard/patients/breakdown/' + yearId);
+  GetRandomization(){
+    return this.http.get<number>(appsettings.api_url + 'Dashboard/randomization');
   }
 
-  GetAppointmentBreakdown(yearId: number){
-    return this.http.get<PatientBreakdownModel[]>(appsettings.api_url + 'Dashboard/appointments/breakdown/' + yearId);
+  GetClientDashboard(){
+    return this.http.get<DashboardModel>(appsettings.api_url + 'Dashboard/patients');
   }
 
-  GetDefaulterBreakdown(yearId: number){
-    return this.http.get<PatientBreakdownModel[]>(appsettings.api_url + 'Dashboard/defaulters/breakdown/' + yearId);
+  GetAppointmentsDashboard(){
+    return this.http.get<DashboardModel>(appsettings.api_url + 'Dashboard/appointments');
+  }
+
+  GetClientsOnScheduledDashboard(){
+    return this.http.get<DashboardModel>(appsettings.api_url + 'Dashboard/patients/onschedule');
+  }
+
+  GetDefaultersDashboard(){
+    return this.http.get<DashboardModel>(appsettings.api_url + 'Dashboard/defaulters');
+  }
+
+  GetDefaultersReturnedDashboard(){
+    return this.http.get<DashboardModel>(appsettings.api_url + 'Dashboard/defaulters/returned');
+  }
+
+  GetActivePHCsDashboard(){
+    return this.http.get<DashboardModel>(appsettings.api_url + 'Dashboard/phcs/active');
+  }
+
+  GetActiveServices(){
+    return this.http.get<string[]>(appsettings.api_url + 'Dashboard/services/active/list');
   }
 }

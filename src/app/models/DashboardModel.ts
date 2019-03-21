@@ -3,11 +3,8 @@ import { Injectable } from "@angular/core";
 @Injectable()
 
 export class DashboardModel {
-    patients: number;
-    settlements: number;
-    appointments: number;
-    defaulters: number;
-    todayAppointments: number;
+    lastMonth: number;
+    currentMonth: number;
 }
 
 export class SMSDashboardModel {

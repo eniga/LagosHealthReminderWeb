@@ -178,5 +178,7 @@ export class LgasManagementComponent implements OnInit {
     }
   }
 
-
+  filterForeCasts(event) {
+    this.stateId = event;
+  }
 }

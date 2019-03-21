@@ -1,135 +1,195 @@
 <div class="header text-center">
   <h4 class="small">Page was updated on {{ pageUpdate | date: 'dd MMM yyyy hh:mm:ss' }}</h4>
 </div> 
-<div class="row"> 
-  <div class="col-lg-2 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-warning card-header-icon">
-        <div class="card-icon">
-            <h3 class="card-title">{{defaulters | number: '1.0-0'}}</h3>
-        </div>
-        <p class="card-category">Defaulted Appointments</p>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">update</i> Just Updated
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-2 col-md-6 col-sm-6">
+<div class="row">
+  <div class="col-md-3">
     <div class="card card-stats">
       <div class="card-header card-header-success card-header-icon">
-        <div class="card-icon">
-          <h3 class="card-title">{{todayAppointments | number: '1.0-0'}}</h3>
-        </div>
-        <p class="card-category">Daily Appointments</p>
+        <h6 class="card-title text-center"># of Clients Registered</h6>
       </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">update</i> Just Updated
+      <div class="body">
+          <div class="py-2"></div>
+        <div class="row">
+          <div class="col-md-5 text-center">Last Month</div>
+          <div class="col-md-2"></div>
+          <div class="col-md-5 text-center">Current Month</div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-2 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-danger card-header-icon">
-        <div class="card-icon">
-          <h3 class="card-title">{{patients | number: '1.0-0'}}</h3>
-        </div>
-        <p class="card-category">Total Clients</p>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">update</i> Just Updated
+        <div class="row">
+          <h3 class="col-md-5 text-center">{{ this.clientDash.lastMonth }}</h3>
+          <h3 class="col-md-2 text-center">
+            <i class="material-icons md-36 {{ this.clientDash.lastMonth < this.clientDash.currentMonth ? 'text-success' : this.clientDash.lastMonth > this.clientDash.currentMonth ? 'text-danger' : 'text-warning' }}">
+            {{ this.clientDash.lastMonth < this.clientDash.currentMonth ? 'trending_up' : this.clientDash.lastMonth > this.clientDash.currentMonth ? 'trending_down' : 'trending_flat' }}
+            </i>
+          </h3>
+          <h3 class="col-md-5 text-center">{{ this.clientDash.currentMonth }}</h3>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg-2 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-header card-header-info card-header-icon">
-        <div class="card-icon">
-          <h3 class="card-title">{{settlements | number: '1.0-0'}}</h3>
-        </div>
-        <p class="card-category">Total Settlements</p>
-      </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">update</i> Just Updated
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-2">
+  <div class="col-md-3">
     <div class="card card-stats">
       <div class="card-header card-header-success card-header-icon">
-        <div class="card-icon">
-          <h3 class="card-title">{{wards | number: '1.0-0'}}</h3>
-        </div>
-        <p class="card-category">Wards</p>
+        <h6 class="card-title text-center"># of Clients returned on schedule</h6>
       </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">update</i> Just Updated
+      <div class="body">
+        <div class="py-2"></div>
+          <div class="row">
+            <div class="col-md-5 text-center">Last Month</div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5 text-center">Current Month</div>
+          </div>
+          <div class="row">
+            <h3 class="col-md-5 text-center">{{ this.onScheduleDash.lastMonth }}</h3>
+            <h3 class="col-md-2 text-center">
+              <i class="material-icons md-36 {{ this.onScheduleDash.lastMonth < this.onScheduleDash.currentMonth ? 'text-success' : this.onScheduleDash.lastMonth > this.onScheduleDash.currentMonth ? 'text-danger' : 'text-warning' }}">
+              {{ this.onScheduleDash.lastMonth < this.onScheduleDash.currentMonth ? 'trending_up' : this.onScheduleDash.lastMonth > this.onScheduleDash.currentMonth ? 'trending_down' : 'trending_flat' }}
+              </i>
+            </h3>
+            <h3 class="col-md-5 text-center">{{ this.onScheduleDash.currentMonth }}</h3>
+          </div>
         </div>
-      </div>
     </div>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-3">
     <div class="card card-stats">
       <div class="card-header card-header-success card-header-icon">
-        <div class="card-icon">
-          <h3 class="card-title">{{lgas | number: '1.0-0'}}</h3>
-        </div>
-        <p class="card-category">LGAs</p>
+        <h6 class="card-title text-center"># of Appointments Created</h6>
       </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">update</i> Just Updated
+      <div class="body">
+          <div class="py-2"></div>
+          <div class="row">
+            <div class="col-md-5 text-center">Last Month</div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5 text-center">Current Month</div>
+          </div>
+          <div class="row">
+            <h3 class="col-md-5 text-center">{{ this.appointmentDash.lastMonth }}</h3>
+            <h3 class="col-md-2 text-center">
+              <i class="material-icons md-36 {{ this.appointmentDash.lastMonth < this.appointmentDash.currentMonth ? 'text-success' : this.appointmentDash.lastMonth > this.appointmentDash.currentMonth ? 'text-danger' : 'text-warning' }}">
+              {{ this.appointmentDash.lastMonth < this.appointmentDash.currentMonth ? 'trending_up' : this.appointmentDash.lastMonth > this.appointmentDash.currentMonth ? 'trending_down' : 'trending_flat' }}
+              </i>
+            </h3>
+            <h3 class="col-md-5 text-center">{{ this.appointmentDash.currentMonth }}</h3>
+          </div>
         </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <h6 class="card-title text-center"># of Clients Defaulted</h6>
       </div>
+      <div class="body">
+          <div class="py-2"></div>
+          <div class="row">
+            <div class="col-md-5 text-center">Last Month</div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5 text-center">Current Month</div>
+          </div>
+          <div class="row">
+            <h3 class="col-md-5 text-center">{{ this.defaultersDash.lastMonth }}</h3>
+            <h3 class="col-md-2 text-center">
+              <i class="material-icons md-36 {{ this.defaultersDash.lastMonth < this.defaultersDash.currentMonth ? 'text-success' : this.defaultersDash.lastMonth > this.defaultersDash.currentMonth ? 'text-danger' : 'text-warning' }}">
+              {{ this.defaultersDash.lastMonth < this.defaultersDash.currentMonth ? 'trending_up' : this.defaultersDash.lastMonth > this.defaultersDash.currentMonth ? 'trending_down' : 'trending_flat' }}
+              </i>
+            </h3>
+            <h3 class="col-md-5 text-center">{{ this.defaultersDash.currentMonth }}</h3>
+          </div>
+        </div>
     </div>
   </div>
 </div>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card card-stats">
       <div class="card-header card-header-success card-header-icon">
-        <div class="card-title">Clients Registered ({{ yearId }})</div>
+        <h6 class="card-title text-center"># of Clients Defaulted</h6>
       </div>
-      <div class="card-body">
-        <canvas #clientChart>{{ clientChart }}</canvas>
-      </div>
+      <div class="body">
+          <div class="py-2"></div>
+          <div class="row">
+            <div class="col-md-5 text-center">Last Month</div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5 text-center">Current Month</div>
+          </div>
+          <div class="row">
+            <h3 class="col-md-5 text-center">{{ this.defaultersReturnedDash.lastMonth }}</h3>
+            <h3 class="col-md-2 text-center">
+              <i class="material-icons md-36 {{ this.defaultersReturnedDash.lastMonth < this.defaultersReturnedDash.currentMonth ? 'text-success' : this.defaultersReturnedDash.lastMonth > this.defaultersReturnedDash.currentMonth ? 'text-danger' : 'text-warning' }}">
+              {{ this.defaultersReturnedDash.lastMonth < this.defaultersReturnedDash.currentMonth ? 'trending_up' : this.defaultersReturnedDash.lastMonth > this.defaultersReturnedDash.currentMonth ? 'trending_down' : 'trending_flat' }}
+              </i>
+            </h3>
+            <h3 class="col-md-5 text-center">{{ this.defaultersReturnedDash.currentMonth }}</h3>
+          </div>
+        </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card card-stats">
       <div class="card-header card-header-success card-header-icon">
-        <div class="card-title">Appointments ({{ yearId }})</div>
+        <h6 class="card-title text-center"># of Clients Defaulted</h6>
       </div>
-      <div class="card-body">
-        <canvas #appointmentChart>{{ appointmentChart }}</canvas>
-      </div>
+      <div class="body">
+          <div class="py-2"></div>
+          <div class="row">
+            <div class="col-md-5 text-center">Last Month</div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5 text-center">Current Month</div>
+          </div>
+          <div class="row">
+            <h3 class="col-md-5 text-center">{{ this.activePhcDash.lastMonth }}</h3>
+            <h3 class="col-md-2 text-center">
+              <i class="material-icons md-36 {{ this.activePhcDash.lastMonth < this.activePhcDash.currentMonth ? 'text-success' : this.activePhcDash.lastMonth > this.activePhcDash.currentMonth ? 'text-danger' : 'text-warning' }}">
+              {{ this.activePhcDash.lastMonth < this.activePhcDash.currentMonth ? 'trending_up' : this.activePhcDash.lastMonth > this.activePhcDash.currentMonth ? 'trending_down' : 'trending_flat' }}
+              </i>
+            </h3>
+            <h3 class="col-md-5 text-center">{{ this.activePhcDash.currentMonth }}</h3>
+          </div>
+        </div>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="card card-stats">
       <div class="card-header card-header-success card-header-icon">
-        <div class="card-title">Defaulters ({{ yearId }})</div>
+        <h6 class="card-title text-center">Randomization</h6>
       </div>
-      <div class="card-body">
-        <canvas #defaulterChart>{{ defaulterChart }}</canvas>
-      </div>
+      <div class="body">
+          <div class="py-2"></div>
+          <div class="row">
+            <div class="col-md-5 text-center"></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5 text-center">Current Setting</div>
+          </div>
+          <div class="row">
+            <h3 class="col-md-5 text-center"></h3>
+            <h3 class="col-md-2 text-center"></h3>
+            <h3 class="col-md-5 text-center">{{randomization | number: '1.0-0'}} %</h3>
+          </div>
+        </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
+  <div class="col-md-3">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <h6 class="card-title text-center">Total</h6>
+      </div>
+      <div class="body">
+          <div class="py-2"></div>
+          <div class="row">
+            <div class="col-md-6 text-center">Defaulted Appointment</div>
+            <div class="col-md-6 text-center">Total Clients</div>
+          </div>
+          <div class="row">
+            <h3 class="col-md-6 text-center">{{ this.defaulters }}</h3>
+            <h3 class="col-md-6 text-center">{{ this.patients }}</h3>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-md-3">
     <div class="card">
-      <div class="card-header card-header-success">
-        <h4 class="card-title">SMS Usage</h4>
+      <div class="card-header card-header-success card-header-icon">
+        <h6 class="card-title text-center">SMS Usage</h6>
       </div>
       <div class="card-body">
         <table class="table">
@@ -157,22 +217,23 @@
       </div>
     </div>
   </div>
-  
-  <div class="col-md-2">
-    <div class="card card-stats">
+  <div class="col-md-3">
+    <div class="card">
       <div class="card-header card-header-success card-header-icon">
         <div class="card-icon">
-          <h3 class="card-title">{{phcs | number: '1.0-0'}}</h3>
+          <h6 class="card-title text-center">Services Covered</h6>
         </div>
-        <p class="card-category">PHCs</p>
       </div>
-      <div class="card-footer">
-        <div class="stats">
-          <i class="material-icons">update</i> Just Updated
-        </div>
+      <div class="card-body">
+        <table class="table">
+          <tr *ngFor="let item of activeServicesDash">
+            <td>{{ item }}</td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
+  
   <div class="col-md-6">
     
   </div>
