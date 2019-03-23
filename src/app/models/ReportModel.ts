@@ -16,6 +16,7 @@ export class AppointmentReport{
     settlement: string;
     ward: string;
     lga: string;
+    phc: string;
     reminderStatus: string;
     dateSent: Date;
     intervention: string;

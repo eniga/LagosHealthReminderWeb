@@ -53,7 +53,7 @@
 
                   <!-- Ward -->
                 <ng-container matColumnDef="confirmationDate">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Confirmation Date</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Returned Date</th>
                     <td mat-cell *matCellDef="let element"> {{ checkDate(element.confirmationDate) }} </td>
                   </ng-container>
 
@@ -65,7 +65,7 @@
                   
                   <!-- Date Created -->
                 <ng-container matColumnDef="ward">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Ward</th>
                     <td mat-cell *matCellDef="let element"> {{ element.ward }} </td>
                   </ng-container>
   
@@ -75,9 +75,15 @@
                     <td mat-cell *matCellDef="let element"> {{ element.lga }} </td>
                   </ng-container>
 
+                    <!-- Created By -->
+                <ng-container matColumnDef="phc">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>PHC</th>
+                    <td mat-cell *matCellDef="let element"> {{ element.phc }} </td>
+                  </ng-container>
+
                   <!-- PHC -->
                   <ng-container matColumnDef="reminderStatus">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Reminder Status</th>
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>SMS Sent</th>
                       <td mat-cell *matCellDef="let element"> {{ element.reminderStatus }} </td>
                     </ng-container>
 
