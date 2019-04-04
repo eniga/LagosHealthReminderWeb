@@ -153,7 +153,7 @@ export class DashboardComponent implements OnInit {
   }
 
   GetClientsOnScheduledDashboard(){
-    this.service.GetAppointmentsDashboard().subscribe((data: DashboardModel) => {
+    this.service.GetClientsOnScheduledDashboard().subscribe((data: DashboardModel) => {
       this.onScheduleDash = data;
       this.pageUpdate = new Date;
     })
