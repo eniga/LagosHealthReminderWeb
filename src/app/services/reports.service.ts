@@ -14,4 +14,8 @@ export class ReportsService {
   GetAppointments(){
     return this.http.get<AppointmentReport[]>(appsettings.api_url + 'Reports/appointments');
   }
+
+  GetAppointmentsRange(startDate: string, endDate: string){
+    return this.http.get<AppointmentReport[]>(appsettings.api_url + 'Reports/appointments/' + startDate + '/' + endDate);
+  }
 }

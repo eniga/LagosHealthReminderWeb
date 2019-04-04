@@ -4,13 +4,29 @@
       <div class="card">
         <div class="card-header">
           <h5 class="card-title">Appointment Report</h5>
-          <button mat-raised-button type="button" class="btn btn-custom" (click)="exportTable()">
-            Export as Excel <i class="fa fa-file-excel"></i>
-          </button>
-          <!-- <button mat-raised-button type="button" class="btn btn-custom">Export</button> -->
-          <mat-form-field class="col-sm-3 pull-right">
-            <input matInput class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Filter..." [(ngModel)]="filterValue">
-          </mat-form-field>
+          <div class="row">
+            <mat-form-field class="col-sm-4">
+              <label class="control-label">Start Date</label>
+              <input matInput [matDatepicker]="startpicker" [(ngModel)]="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
+              <mat-datepicker #startpicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-sm-4">
+              <label class="control-label">End Date</label>
+              <input matInput [matDatepicker]="endpicker" [(ngModel)]="endDate">
+              <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
+              <mat-datepicker #endpicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="row col-sm-4">
+            <button mat-raised-button type="button" class="btn btn-custom" (click)="GetAppointmentsRange()">
+              Generate <i class="fa fa-download"></i>
+            </button>
+            <button mat-raised-button type="button" class="btn btn-custom" (click)="exportTable()" *ngIf="appointments.length > 0">
+              Export as Excel <i class="fa fa-file-excel"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body" #TABLE>
             <table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 table table-hover" matSort>

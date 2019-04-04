@@ -21,22 +21,40 @@ export class ReportsComponent implements OnInit {
   @ViewChild('TABLE') table: ElementRef;
   filterValue: string;
   total: number;
-  isLoading = true;
+  isLoading = false;
+  startDate: Date;
+  endDate: Date;
   
   appointments: AppointmentReport[] = [];
   constructor(private service: ReportsService) { }
 
   ngOnInit() {
-    this.GetAppointments();
+    //this.GetAppointments();
   }
 
   GetAppointments(){
+    this.isLoading = true;
     this.service.GetAppointments().subscribe((data: AppointmentReport[]) => {
       this.appointments = data;
       this.dataSource = new MatTableDataSource(this.appointments);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.updateTotal();
+      this.isLoading = false;
+    })
+  }
+
+  GetAppointmentsRange(){
+    this.isLoading = true;
+    let start = moment(this.startDate).format("YYYY-MM-DD");
+    let end = moment(this.endDate).format("YYYY-MM-DD");
+    this.service.GetAppointmentsRange(start, end).subscribe((data: AppointmentReport[]) => {
+      this.appointments = data;
+      this.dataSource = new MatTableDataSource(this.appointments);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.updateTotal();
+      this.isLoading = false;
     })
   }
 
