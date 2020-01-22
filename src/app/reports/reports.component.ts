@@ -13,7 +13,7 @@ import * as moment from 'moment';
 export class ReportsComponent implements OnInit {
 
   // Array of Reports
-  displayedColumns: string[] = ['fullName', 'qrCode', 'phone', 'serviceKindName', 'serviceTypeName', 'appointmentDate', 'confirmationDate', 'settlement', 'ward', 'lga', 'phc', 'reminderStatus', 'dateSent', 'intervention'];
+  displayedColumns: string[] = ['fullName', 'phone', 'serviceKindName', 'serviceTypeName', 'appointmentDate', 'confirmationDate', 'settlement', 'ward', 'lga', 'phc', 'reminderStatus', 'dateSent', 'intervention'];
   dataSource: MatTableDataSource<AppointmentReport>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

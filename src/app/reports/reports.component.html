@@ -21,7 +21,7 @@
           </div>
           <div class="row col-sm-4">
             <button mat-raised-button type="button" class="btn btn-custom" (click)="GetAppointmentsRange()">
-              Generate <i class="fa fa-download"></i>
+              Generate
             </button>
             <button mat-raised-button type="button" class="btn btn-custom" (click)="exportTable()" *ngIf="appointments.length > 0">
               Export as Excel <i class="fa fa-file-excel"></i>
@@ -35,12 +35,6 @@
               <ng-container matColumnDef="fullName">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Client Name</th>
                   <td mat-cell *matCellDef="let element"> {{ element.fullName }} </td>
-                </ng-container>
-
-                <!-- Middle Name-->
-              <ng-container matColumnDef="qrCode">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>QR Code</th>
-                  <td mat-cell *matCellDef="let element"> {{ element.qrCode }} </td>
                 </ng-container>
 
                 <!-- Last Name -->
