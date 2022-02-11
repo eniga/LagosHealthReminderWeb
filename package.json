@@ -26,7 +26,7 @@
     "@ng-bootstrap/ng-bootstrap": "^3.2.2",
     "@ng-idle/core": "^6.0.0-beta.3",
     "@ng-idle/keepalive": "^6.0.0-beta.3",
-    "ajv": "^6.5.4",
+    "ajv": "^6.12.3",
     "ajv-keywords": "^3.2.0",
     "angular2-moment": "^1.9.0",
     "bootstrap": "^4.1.3",
